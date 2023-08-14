@@ -4,7 +4,7 @@
 
 
 //create 10 threads each printing a unique prime number from the array and printing it to the screen
-int arr[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
+/* int arr[10] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29};
 pthread_mutex_t mutex;
 
 void* routine(int *num){
@@ -21,8 +21,8 @@ int main()
 	pthread_t thread[10];
 	pthread_mutex_init(&mutex, NULL);
 	//creating each thread
-	/* for (int i = 0; i < 10; i++)
-		pthread_create(thread + i, NULL, (void*) routine, arr + i); */
+	 for (int i = 0; i < 10; i++)
+		pthread_create(thread + i, NULL, (void*) routine, arr + i);
 	//or do this
 	for (int i = 0; i < 10; i++)
 	{
@@ -36,36 +36,29 @@ int main()
 		pthread_join(thread[i], NULL);
 	pthread_mutex_destroy(&mutex);
 	return (0);
-}
+} */
 
 
-/*
-void* routine(void* num){
-	int	i = *(int*)num;
-	pthread_mutex_lock(&mutex);
-	printf("Thread is printing %d\n", arr[i]);
-	pthread_mutex_unlock(&mutex);
 
+void* routine(){
+	while (1)
+	{
+		printf("Thread is alive\n");
+	}
 	return NULL;
 }
 
 int main()
 {
-	pthread_t thread[10];
-	pthread_mutex_init(&mutex, NULL);
+	pthread_t thread[2];
 	//creating each thread
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		int	*id = malloc(sizeof(*id));
-//		*id = i;
-		pthread_create(thread + i, NULL, &routine, id);
+		pthread_create(thread + i, NULL, &routine, NULL);
+		pthread_detach(thread[i]);
 	}
-
 	//waiting for the execution to end for each thread
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 2; i++)
 		pthread_join(thread[i], NULL);
-	pthread_mutex_destroy(&mutex);
 	return (0);
 }
-
-*/

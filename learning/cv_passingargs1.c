@@ -23,17 +23,18 @@ int main()
 {
 	pthread_t thread[2];
 	int *result = 0;
-
-	for (int i = 0; i < 2; i++)
+	int i = 0;
+	for (; i < 2; i++)
 	{
 		int* size = malloc(sizeof(int));
 		*size = i * 5;
 		if (pthread_create(thread + i, NULL, (void*) routine, size) == 1)
 			return (perror("Error while creating the threads\n"), 1);
 	}
+	pthread_detach(thread[i]);
 
 	int globalSum = 0;
-	for (int i = 0; i < 2; i++)
+	for (i = 0; i < 2; i++)
 	{
 		if (pthread_join(thread[i], &result) == 1)
 			return (perror("Error while joining the threads\n"), 2);
