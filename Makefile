@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/08/14 20:11:40 by glacroix         ###   ########.fr        #
+#    Updated: 2023/08/15 17:29:45 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,12 +37,12 @@ OBJS		= $(SRCS:%.c=objs/%.o)
 #Execution
 # **************************************************************************** #
 CC			= gcc
-CFLAGS		= -Wall -Werror -Wextra -pthread -O3
+CFLAGS		= -Wall -Werror -Wextra -pthread -O3  -fsanitize=thread
 
 #SRC Execution
 # **************************************************************************** #
 ${NAME}: objs ${OBJS}
-	@$(CC) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 	@echo $(GREEN) "\n         Philo Compiled!       \n" $(RESET)
 
 #Makefile Cmds

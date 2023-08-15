@@ -1,38 +1,35 @@
-#include <unistd.h>
+
 #include <stdio.h>
-#include <pthread.h>
 #include <stdlib.h>
-#include <time.h>
+#include <pthread.h>
+#include <sys/time.h>
+#include <string.h>
+#include <unistd.h>
 
-int mails = 0;
-int lock = 0;
-pthread_mutex_t mutex;
-
-
-//trying to run a rolling dice function with 4 threads and returning a value from pthread_join function
-void *routine()
-{
-		int	value = (rand() % 6) + 1;
-		int* res = malloc(sizeof(int));
-		
-		*res = value;
-		printf("Before: Address from result is %p\n", res);
-		return (void*) res;
+int	sum = 0;
+void* routine(void *arg) {
+	while (1)
+	{
+		sum += 1;
+		//philo->data->test += 1;
+		printf("%d\n", sum);
+		sleep(1);
+	}
+		/* philo->data->test++;
+		printf("Address of data: %p\nAddress of data.test: %p\n", philo->data, &philo->data->test); */
+	return NULL;
 }
 
-int main(int argc, char **argv)
+int main()
 {
-	int i;
-	int* res;
-	srand(time(NULL));
-	pthread_t philo;
-	//creating the threads
-	if (pthread_create(&philo, NULL, &routine, NULL) != 0)
-		return 1;
-	//waiting for the threads' execution end
-	if (pthread_join(philo, (void**) &res) != 0)
-		return 1;
-	printf("AFTER: Address from result is %p\n", res);
-	printf("AFTER: Result from rolling is %d\n", *res);
-	return(0);	
+	pthread_t	threads[2];
+
+	for (int i = 0; i < 2; i++)
+	{
+		pthread_create(threads + i, NULL, routine, NULL);
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		pthread_join(threads[i], NULL);
+	}
 }
