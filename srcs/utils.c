@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:57:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/15 18:08:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/17 14:51:38 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	is_number(char *str)
 	return(1);
 }
 
-//TODO: getting the current time -- put in separate function
 size_t	get_time(void)
 {
 	struct timeval	time;

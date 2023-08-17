@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/15 18:51:28 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:54:12 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,25 +24,36 @@ void	args_init(int argc, char **argv, t_data *data)
 		data->max_eating_cycles = atoi(argv[5]);
 }
 
-int	philos_init(t_data *data)
+int	threads_init(t_data *data)
 {
 	t_philo	*philo;
-	pthread_mutex_init(&data->forks, NULL);
-
+	
+	//!TODO: change calloc to ft_calloc
 	philo = calloc(sizeof(*philo), data->nbr_philos);
+ 	data->forks = malloc(sizeof(pthread_mutex_t*) * data->nbr_philos);
+	pthread_mutex_init(data->forks, NULL);
 	for (int i = 0; i < data->nbr_philos; i++)
 	{
 		philo[i].id = i + 1;
 		philo[i].data = data;
-		if (pthread_create(&philo[i].thread, NULL, (void *)routine, philo + i) != 0)
-			return (printf("Error when creating thread\n"), 1);
+		if (philo[i].id % 2 == 0)
+		{
+			if (pthread_create(&philo[i].thread, NULL, (void *)ft_eat, philo + i) != 0)
+				return (printf("Error when creating thread\n"), 1);
+		}
+		else
+		{
+			if (pthread_create(&philo[i].thread, NULL, (void *)ft_sleep, philo + i) != 0)
+				return (printf("Error when creating thread\n"), 1);
+		}
+			
 	}
 	for (int i = 0; i < data->nbr_philos; i++)
 	{
 		if (pthread_join(philo[i].thread, NULL) != 0)
 			return (printf("Error when joing thread\n"), 1);
 	}
-	pthread_mutex_destroy(&data->forks);
+	pthread_mutex_destroy(data->forks);
 	return (0);
 }
 

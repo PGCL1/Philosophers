@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:41:20 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/15 16:32:30 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/17 15:50:52 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ int	main(int argc, char **argv)
 	if (args_wrong(argc, argv) == TRUE)
 		return (printf("Params are wrong\n"), 1);
 	args_init(argc, argv, &data);
-	philos_init(&data);
+	threads_init(&data);
 	return (0);
 }
