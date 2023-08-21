@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:13:29 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/17 19:02:51 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/21 15:23:18 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,36 @@
 
 //timestamp_in_ms X has taken a fork
 
-static void pick_up_left_fork(t_philo *philo)
+static void takeforks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->forks);
-	printf(GREEN"%ld %d has taken a left fork\n"RESET, get_time(), philo->id);
-	pthread_mutex_unlock(philo->data->forks);
+	printf("did it work mutex: %d\n", pthread_mutex_lock(philo->data->forks[LEFT]));
+	printf("%ld %d is taking the left fork %d with adi %p\n", get_time(), philo->id, LEFT, &(philo->data->forks[LEFT]));
+	pthread_mutex_lock(philo->data->forks[RIGHT]);
+	printf("%ld %d is taking the right fork %d with adi %p\n", get_time(), philo->id, RIGHT, &(philo->data->forks[RIGHT]));
 }
 
-static void pick_up_right_fork(t_philo *philo)
+static void eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->forks);
-	printf(GREEN"%ld %d has taken a right fork\n"RESET, get_time(), philo->id);
-	pthread_mutex_unlock(philo->data->forks);
+	printf(GREEN"%ld %d is eating\n"RESET, get_time(), philo->id);
 }
 
-void *ft_eat(t_philo *philo)
+static void putforks(t_philo *philo)
 {
-	pick_up_left_fork(philo);
-	pick_up_right_fork(philo);
-	printf("Bf eating: %ld\n", get_time());
-	usleep(philo->data->time_to_eat);
-	printf("Af eating: %ld\n", get_time());
-	return NULL;
-}
-
-void *ft_sleep(t_philo *philo)
-{
-	(void)philo;
-	usleep(200);
-	printf("I'm waiting\n");
-	return NULL;
+	pthread_mutex_unlock(philo->data->forks[LEFT]);
+	printf(RED"%ld %d is putting down the left fork %d with adi %p\n"RESET, get_time(), philo->id, LEFT, &philo->data->forks[LEFT]);
+	pthread_mutex_unlock(philo->data->forks[RIGHT]);
+	printf(RED"%ld %d is putting down the right fork %d with adi %p\n"RESET, get_time(), philo->id, RIGHT,  &philo->data->forks[RIGHT]);
 }
 
 void *routine(t_philo *philo)
 {
-	while (1)
-	{
-		//wait
-		//eat
-		//sleep
-	}
+	// if (philo->id % 2 == 0)
+	// 	usleep(800);
+	takeforks(philo);
+ 	eat(philo);
+	putforks(philo);
 	return (NULL);
-};
+}
 
 //need to calculate a start time for the simulation
 //to eat, each philo must have two forks
