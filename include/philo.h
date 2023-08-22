@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/22 15:54:33 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/22 19:22:36 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,19 @@ typedef struct t_data {
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	size_t			start_time;
-	int				test;
 	int				max_eating_cycles;
 	int				nbr_philos;
 	pthread_mutex_t *forks;
-	pthread_mutex_t *buffer;
+	pthread_mutex_t *start_same_time;
 } t_data;
 
 typedef struct t_philo {
 	int 		id;
 	pthread_t	thread;
-	int			state;
 	size_t		start_time;
+	int			has_left_fork;
+	int			has_right_fork;
 	size_t		last_meal;
-	int			fork_counter;
 	int			has_ate;
 	t_data		*data;
 } t_philo;
@@ -63,6 +62,7 @@ typedef struct t_philo {
 # define TIME_SPENT (get_time() - philo->data->start_time)
 # define TIME_TO_EAT (philo->data->time_to_eat * 1000)
 # define TIME_TO_DIE (philo->data->time_to_die * 1000)
+# define TIME_TO_SLEEP (philo->data->time_to_sleep * 1000)
 
 int		args_wrong(int argc, char** argv);
 int		ft_isdigit(char c);
