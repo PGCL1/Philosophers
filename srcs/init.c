@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/21 15:40:07 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/22 15:54:50 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ int	threads_init(t_data *data)
 	
 	//!TODO: change calloc to ft_calloc
 	philo = calloc(sizeof(*philo), data->nbr_philos);
- 	data->forks = calloc(sizeof(pthread_mutex_t**), data->nbr_philos);
-	//! problem with pointer to pointer related to mutex_lock in routine - the mutex didn't lock
-	pthread_mutex_init((data->forks), NULL);
-	printf("did it work mutex init: %d\n", pthread_mutex_init(data->forks, NULL));
-	exit(0);
+	data->buffer = malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_init(data->buffer, NULL);
+ 	data->forks = calloc(sizeof(pthread_mutex_t*), data->nbr_philos);
+	for (int i = 0; i < data->nbr_philos; i++)
+		pthread_mutex_init(&data->forks[i], NULL);
+	pthread_mutex_lock(data->buffer);
 	for (int i = 0; i < data->nbr_philos; i++)
 	{
 		philo[i].id = i + 1;
@@ -43,13 +44,13 @@ int	threads_init(t_data *data)
 		else 
 			printf("Succes\n");
 	}
-	while(1);
+	pthread_mutex_unlock(data->buffer);
 	for (int i = 0; i < data->nbr_philos; i++)
 	{
 		if (pthread_join(philo[i].thread, NULL) != 0)
 			return (printf("Error when joing thread\n"), 1);
 	}
-	pthread_mutex_destroy((*data->forks));
+	pthread_mutex_destroy(data->forks);
 	return (0);
 }
 
