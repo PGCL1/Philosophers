@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:13:29 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/22 19:34:02 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/23 12:06:55 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ void takeforks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[LEFT]);
 	pthread_mutex_lock(&philo->data->forks[RIGHT]);
-	printf(ORANGE"%ld %d has taken a left fork\n"RESET, TIME_SPENT, philo->id);
-	printf(ORANGE"%ld %d has taken a right fork \n"RESET, TIME_SPENT, philo->id);
-	
+	printf(MAGENTA"%ld %d has taken a fork\n"RESET, TIME_SPENT, philo->id);
+	printf(MAGENTA"%ld %d has taken a fork \n"RESET, TIME_SPENT, philo->id);
 }
 
 void eat(t_philo *philo)
@@ -34,7 +33,9 @@ void putforks(t_philo *philo)
 {
 	pthread_mutex_unlock(&philo->data->forks[LEFT]);
 	pthread_mutex_unlock(&philo->data->forks[RIGHT]);
+	printf(ORANGE"%ld %d is sleeping\n"RESET, TIME_SPENT, philo->id);
 	usleep(TIME_TO_SLEEP);
+	printf(WHITE"%ld %d is thinking\n"RESET, TIME_SPENT, philo->id);
 }
 
 void *routine(t_philo *philo)

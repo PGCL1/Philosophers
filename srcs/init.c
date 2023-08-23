@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/22 19:30:30 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/23 12:07:43 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void mutex_init(t_data *data)
 	data->start_same_time = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(data->start_same_time, NULL);
  	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
-	printf("nbr philos: %d\n", data->nbr_philos);
 	while (++i < data->nbr_philos)
 		pthread_mutex_init(&data->forks[i], NULL);
 }
@@ -48,9 +47,6 @@ int	threads_init(t_data *data)
 	{
 		philo[i].id = i + 1;
 		philo[i].data = data;
-		philo->has_left_fork = 0;
-		philo->has_right_fork = 0;
-		philo->has_ate = 0;
 		if (pthread_create(&philo[i].thread, NULL, (void *) routine, philo + i) != 0)
 			return (printf("Error when creating thread\n"), 1);
 	}
