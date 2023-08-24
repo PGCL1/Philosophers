@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/23 18:26:50 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/24 18:38:19 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,16 @@ typedef struct	t_data {
 	int				max_eating_cycles;
 	int				nbr_philos;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*ready_set;
+	pthread_mutex_t	ready_set;
+	pthread_mutex_t	death_mutex;
 }				t_data;
 
 typedef struct	t_philo {
 	pthread_t	thread;
 	size_t		start_time;
-	size_t		last_meal_time;
+	size_t		finished_eating_time;
+	size_t		end_pick_time;
+	size_t		end_put_time;
 	int			id;
 	int			dead;
 	int			has_left_fork;
@@ -61,12 +64,7 @@ typedef struct	t_philo {
 # define FALSE 0
 
 /*Shortcuts-------------------------------------------------------------------*/
-# define LEFT (philo->id-1)
-# define RIGHT (philo->id%philo->data->nbr_philos)
-# define TIME_SPENT (get_time()-philo->data->start_time)
-# define TIME_TO_EAT (philo->data->time_to_eat*1000)
-# define TIME_TO_DIE (philo->data->time_to_die)
-# define TIME_TO_SLEEP (philo->data->time_to_sleep*1000)
+
 
 /*1) Init---------------------------------------------------------------------*/
 void	args_init(int argc, char **argv, t_data *data);
@@ -84,6 +82,6 @@ void	*routine(t_philo *philo);
 void	takeforks(t_philo *philo);
 void	eat(t_philo *philo);
 void	putforks(t_philo *philo);
-int		philo_died(t_philo *philo);
+void	philo_died(t_philo *philo);
 
 #endif
