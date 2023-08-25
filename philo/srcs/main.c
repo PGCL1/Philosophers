@@ -6,12 +6,12 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:41:20 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/24 15:23:04 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/25 17:13:24 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
-//./philo nbr_philo time_to_die philo->data->time_to_eat*1000 time_to_sleep [options]
+//./philo nbr_philo time_to_die time_to_eat time_to_sleep [options]
 int	main(int argc, char **argv)
 {
 	t_data	data;

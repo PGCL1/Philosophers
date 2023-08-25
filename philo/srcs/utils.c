@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:57:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/23 18:11:53 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/25 21:22:41 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,15 @@
 int	ft_isdigit(char c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+void	ft_sleep(size_t time)
+{
+	size_t	start;
+
+	start = current_time();
+	while (current_time() < start + time)
+		usleep(10);
 }
 
 int	is_number(char *str)
@@ -32,7 +41,7 @@ int	is_number(char *str)
 	return (1);
 }
 
-size_t	get_time(void)
+size_t	current_time(void)
 {
 	struct timeval	time;
 	size_t			current_time;

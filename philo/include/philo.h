@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/24 18:38:19 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/25 21:22:47 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ typedef struct	t_philo {
 	pthread_t	thread;
 	size_t		start_time;
 	size_t		finished_eating_time;
-	size_t		end_pick_time;
-	size_t		end_put_time;
 	int			id;
 	int			dead;
 	int			has_left_fork;
@@ -74,14 +72,15 @@ int		threads_init(t_data *data);
 int		args_wrong(int argc, char **argv);
 int		ft_isdigit(char c);
 int		is_number(char *str);
-size_t	get_time(void);
+size_t	current_time(void);
 int		ft_atoi(char *str);
+void	ft_sleep(size_t time);
 
 /*3) Routine------------------------------------------------------------------*/
 void	*routine(t_philo *philo);
 void	takeforks(t_philo *philo);
 void	eat(t_philo *philo);
-void	putforks(t_philo *philo);
+void	drop_n_sleep(t_philo *philo);
 void	philo_died(t_philo *philo);
 
 #endif
