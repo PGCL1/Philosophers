@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/25 21:12:05 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/28 15:12:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	args_init(int argc, char **argv, t_data *data)
 		return;
 }
 
+
 int	threads_init(t_data *data)
 {
 	t_philo	*philo;
@@ -58,7 +59,7 @@ int	threads_init(t_data *data)
 		philo[i].id = i + 1;
 		philo[i].data = data;
 		philo[i].has_ate_n_times = 0;
-		philo[i].flag_max_meals = 0;
+		philo[i].ate_enough = FALSE;
 		philo[i].dead = FALSE;
 		philo[i].finished_eating_time = 0;
 		if (pthread_create(&philo[i].thread, NULL, (void *) routine, philo + i))
@@ -66,7 +67,6 @@ int	threads_init(t_data *data)
 	}
 	data->start_time = current_time();
 	pthread_mutex_unlock(&data->ready_set);
-	//!TODO implement philo death variable inside main thread
  	while (1)
 	{
 		for (int i = 0; i < data->nbr_philos; i++)
@@ -74,10 +74,10 @@ int	threads_init(t_data *data)
 			philo_died(&(philo[i]));
 			if (philo[i].dead == TRUE)
 			{
-				printf(RED"ID: %d | %lu died//\n"RESET, philo[i].id,  current_time() - philo->data->start_time);
-				printf(RED"ID: %d | %lu died//\n"RESET, philo[i].id,  philo[i].start_time);
+				printf(RED"ID: %d | %llu died//\n"RESET, philo[i].id,  current_time() - philo->data->start_time);
+				printf(RED"ID: %d | %lld died//\n"RESET, philo[i].id,  philo[i].start_time);
 				printf("he died\n");
-	/* 			exit(0); */
+				exit(0);
 			}
 		}
 	} 

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/25 21:22:47 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/28 15:13:34 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@
 
 /*Data Structures-------------------------------------------------------------*/
 typedef struct	t_data {
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
-	size_t			start_time;
+	long long		time_to_die;
+	long long		time_to_eat;
+	long long		time_to_sleep;
+	long long		start_time;
 	int				max_eating_cycles;
 	int				nbr_philos;
 	pthread_mutex_t	*forks;
@@ -46,14 +46,13 @@ typedef struct	t_data {
 
 typedef struct	t_philo {
 	pthread_t	thread;
-	size_t		start_time;
-	size_t		finished_eating_time;
+	long long	start_time;
+	long long	finished_eating_time;
 	int			id;
 	int			dead;
-	int			has_left_fork;
-	int			has_right_fork;
-	int			flag_max_meals;
 	int			has_ate_n_times;
+	int			ate_enough;
+	int			exit_flag;
 	t_data		*data;
 }				t_philo;
 
@@ -72,9 +71,9 @@ int		threads_init(t_data *data);
 int		args_wrong(int argc, char **argv);
 int		ft_isdigit(char c);
 int		is_number(char *str);
-size_t	current_time(void);
+long long	current_time(void);
 int		ft_atoi(char *str);
-void	ft_sleep(size_t time);
+void	ft_sleep(long long time);
 
 /*3) Routine------------------------------------------------------------------*/
 void	*routine(t_philo *philo);
@@ -82,5 +81,6 @@ void	takeforks(t_philo *philo);
 void	eat(t_philo *philo);
 void	drop_n_sleep(t_philo *philo);
 void	philo_died(t_philo *philo);
+int		philo_ate_enough(t_philo *philo);
 
 #endif
