@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/28 16:20:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/29 18:57:17 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,10 @@ int	threads_init(t_data *data)
 {
 	t_philo	*philo;
 	int		i;
+	int		stop;
 
 	i = -1;
+	stop = 0;
 	philo = malloc(sizeof(*philo) * data->nbr_philos);
 	if (!philo)
 		return (1);
@@ -68,25 +70,30 @@ int	threads_init(t_data *data)
 	}
 	data->start_time = current_time();
 	pthread_mutex_unlock(&data->ready_set);
-	while (1)
+	while (!stop)
 	{
-		if (data->exit_flag == data->nbr_philos)
-			break;
 		for (int i = 0; i < data->nbr_philos; i++)
 		{
+			
 			philo_died(&(philo[i]));
+			if (data->exit_flag == data->nbr_philos)
+			{
+				stop = 1;
+				break;
+			}
 			if (philo[i].dead == TRUE)
 			{
 				printf(/* RED */"%llu %d died\n"/* RESET */,  current_time() - philo->data->start_time, philo[i].id);
-				//printf(RED"ID: %d | %lld died//\n"RESET, philo[i].id,  philo[i].start_time);
-				//printf("he died\n");
-				exit(0);
+				stop = 1;
+				break;
 			}
 		}
 	} 
+	/* printf("here: %lld\n", current_time() - data->start_time); */
 	i = 0;
 	while (i < data->nbr_philos)
 	{
+		//printf("%lld\n", current_time() - data->start_time);
 		if (pthread_join(philo[i++].thread, NULL) != 0)
 			return (printf("Error when joining thread\n"), 3);
 	}

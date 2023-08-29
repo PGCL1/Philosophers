@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/08/24 20:51:08 by glacroix         ###   ########.fr        #
+#    Updated: 2023/08/29 17:51:04 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,7 @@ OBJS		= $(SRCS:%.c=objs/%.o)
 #Execution
 # **************************************************************************** #
 CC			= gcc 
-CFLAGS		= -Wall -Werror -Wextra #-g #-fsanitize=thread
+CFLAGS		= -Wall -Werror -Wextra #-g -fsanitize=thread
 
 #SRC Execution
 # **************************************************************************** #

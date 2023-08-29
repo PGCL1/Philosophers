@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/28 15:18:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/29 15:26:40 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,8 @@ void	eat(t_philo *philo);
 void	drop_n_sleep(t_philo *philo);
 void	philo_died(t_philo *philo);
 int		philo_ate_enough(t_philo *philo);
+
+/*4) Memory control-----------------------------------------------------------*/
+void ft_leaks();
 
 #endif
