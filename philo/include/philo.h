@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/28 15:13:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/28 15:18:09 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef struct	t_data {
 	long long		start_time;
 	int				max_eating_cycles;
 	int				nbr_philos;
+	int				exit_flag;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	ready_set;
 	pthread_mutex_t	death_mutex;

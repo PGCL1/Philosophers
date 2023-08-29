@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/28 15:12:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:20:14 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	args_init(int argc, char **argv, t_data *data)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
+	data->exit_flag = ft_atoi("0");
 	if (argc == 6)
 		data->max_eating_cycles = ft_atoi(argv[5]);
 	else
@@ -67,16 +68,18 @@ int	threads_init(t_data *data)
 	}
 	data->start_time = current_time();
 	pthread_mutex_unlock(&data->ready_set);
- 	while (1)
+	while (1)
 	{
+		if (data->exit_flag == data->nbr_philos)
+			break;
 		for (int i = 0; i < data->nbr_philos; i++)
 		{
 			philo_died(&(philo[i]));
 			if (philo[i].dead == TRUE)
 			{
-				printf(RED"ID: %d | %llu died//\n"RESET, philo[i].id,  current_time() - philo->data->start_time);
-				printf(RED"ID: %d | %lld died//\n"RESET, philo[i].id,  philo[i].start_time);
-				printf("he died\n");
+				printf(/* RED */"%llu %d died\n"/* RESET */,  current_time() - philo->data->start_time, philo[i].id);
+				//printf(RED"ID: %d | %lld died//\n"RESET, philo[i].id,  philo[i].start_time);
+				//printf("he died\n");
 				exit(0);
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:57:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/28 15:13:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/29 11:52:39 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_sleep(long long time)
 {
 	long long	start;
 
-	start = current_time();
-	while (current_time() < (long long)start + time)
-		usleep(10);
+	start = current_time() + time;
+	while (current_time() < start)
+		usleep(100);
 }
 
 int	is_number(char *str)
