@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/29 15:26:40 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/30 18:49:08 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ typedef struct	t_data {
 	long long		time_to_sleep;
 	long long		start_time;
 	int				max_eating_cycles;
+	int				philo_died;
 	int				nbr_philos;
+	int				log;
 	int				exit_flag;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	ready_set;
 	pthread_mutex_t	death_mutex;
+	pthread_mutex_t	max_eat_mutex;
 }				t_data;
 
 typedef struct	t_philo {
@@ -51,7 +54,7 @@ typedef struct	t_philo {
 	long long	finished_eating_time;
 	int			id;
 	int			dead;
-	int			has_ate_n_times;
+	int			ate_count;
 	int			ate_enough;
 	int			exit_flag;
 	t_data		*data;
@@ -76,12 +79,13 @@ long long	current_time(void);
 int		ft_atoi(char *str);
 void	ft_sleep(long long time);
 
-/*3) Routine------------------------------------------------------------------*/
-void	*routine(t_philo *philo);
+/*3) schedule------------------------------------------------------------------*/
+void	*schedule(t_philo *philo);
+int		routine(t_philo *philo);
 void	takeforks(t_philo *philo);
 void	eat(t_philo *philo);
 void	drop_n_sleep(t_philo *philo);
-void	philo_died(t_philo *philo);
+int		philo_died(t_philo *philo);
 int		philo_ate_enough(t_philo *philo);
 
 /*4) Memory control-----------------------------------------------------------*/

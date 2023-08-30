@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/29 18:57:17 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/30 18:49:47 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ static void	*mutex_init(t_data *data)
 	i = -1;
 	//data->ready_set = malloc(sizeof(pthread_mutex_t));
 	pthread_mutex_init(&data->ready_set, NULL);
+	pthread_mutex_init(&data->max_eat_mutex, NULL);
+	pthread_mutex_init(&data->death_mutex, NULL);
  	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
 	if (!data->forks)
 		return (printf("data->forks malloc failed\n"), (int*)1);
@@ -35,7 +37,9 @@ void	args_init(int argc, char **argv, t_data *data)
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
-	data->exit_flag = ft_atoi("0");
+	data->philo_died = FALSE;
+	data->log = TRUE;
+	data->exit_flag = 0;
 	if (argc == 6)
 		data->max_eating_cycles = ft_atoi(argv[5]);
 	else
@@ -61,42 +65,45 @@ int	threads_init(t_data *data)
 	{
 		philo[i].id = i + 1;
 		philo[i].data = data;
-		philo[i].has_ate_n_times = 0;
+		philo[i].ate_count = 0;
 		philo[i].ate_enough = FALSE;
 		philo[i].dead = FALSE;
 		philo[i].finished_eating_time = 0;
-		if (pthread_create(&philo[i].thread, NULL, (void *) routine, philo + i))
+		if (pthread_create(&philo[i].thread, NULL, (void *) schedule, philo + i))
 			return (printf("Error when creating thread\n"), 2);
 	}
+	
 	data->start_time = current_time();
 	pthread_mutex_unlock(&data->ready_set);
 	while (!stop)
 	{
 		for (int i = 0; i < data->nbr_philos; i++)
 		{
-			
-			philo_died(&(philo[i]));
 			if (data->exit_flag == data->nbr_philos)
 			{
 				stop = 1;
 				break;
 			}
-			if (philo[i].dead == TRUE)
+			philo_died(&philo[i]);
+			if (philo->data->philo_died == TRUE && data->exit_flag != data->nbr_philos)
 			{
 				printf(/* RED */"%llu %d died\n"/* RESET */,  current_time() - philo->data->start_time, philo[i].id);
 				stop = 1;
+				data->log = FALSE;
 				break;
 			}
 		}
 	} 
-	/* printf("here: %lld\n", current_time() - data->start_time); */
-	i = 0;
-	while (i < data->nbr_philos)
+	i = -1;
+	while (++i < data->nbr_philos)
 	{
-		//printf("%lld\n", current_time() - data->start_time);
-		if (pthread_join(philo[i++].thread, NULL) != 0)
+		//int err = pthread_join(philo[i].thread, NULL);
+		if (pthread_join(philo[i].thread, NULL) != 0)
 			return (printf("Error when joining thread\n"), 3);
+		/*  else
+			printf(RED"%llu %d was joined\n"RESET, current_time() - philo->data->start_time, philo[i].id);  */
 	}
+	pthread_mutex_unlock(data->forks);
 	pthread_mutex_destroy(data->forks);
 	return (0);
 }
