@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/30 18:49:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/31 14:31:00 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct	t_data {
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	max_eat_mutex;
 }				t_data;
+
 
 typedef struct	t_philo {
 	pthread_t	thread;

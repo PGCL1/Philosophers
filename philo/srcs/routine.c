@@ -21,6 +21,7 @@ int	philo_died(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->death_mutex);
 		philo->data->philo_died = TRUE;
+		philo->data->log = FALSE;
 		philo->dead = TRUE;
 		pthread_mutex_unlock(&philo->data->death_mutex);
 		return (1);
@@ -28,16 +29,25 @@ int	philo_died(t_philo *philo)
 	return (0);
 }
 
+
+static void	logs(t_philo *philo, const char *str)//, int (*fp)(const char *fmt, ...))
+{
+	if (philo->data->log == FALSE)
+		return ;
+	else
+		printf("%lld %d %s\n", current_time() - philo->data->start_time, philo->id, str);
+}
+
 void	takeforks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[philo->id-1]);
 	if (philo_died(philo) == 1)
 		return ;
-	printf("%lld %d has taken a fork\n", current_time() - philo->data->start_time, philo->id);
+	logs(philo, "has taken a fork");
 	if (philo->data->nbr_philos == 1)
 		return;
 	pthread_mutex_lock(&philo->data->forks[philo->id % philo->data->nbr_philos]);
-	printf("%lld %d has taken a fork \n", current_time() - philo->data->start_time, philo->id);
+	logs(philo, "has taken a fork");
 	philo->finished_eating_time = current_time() - philo->data->start_time;
 }
 
@@ -47,7 +57,7 @@ void	eat(t_philo *philo)
 		return ;
 	if (philo->data->nbr_philos == 1)
 		return ;
-	printf("%lld %d is eating\n", current_time() - philo->data->start_time, philo->id);
+	logs(philo, "is eating");
 	ft_sleep(philo->data->time_to_eat);
 	philo->ate_count++;
 }
@@ -65,9 +75,9 @@ void	drop_n_sleep(t_philo *philo)
 		philo->ate_enough = TRUE;
 	if (philo->ate_enough == FALSE && philo->data->philo_died == FALSE)
 	{
-		printf("%lld %d is sleeping\n", current_time() - philo->data->start_time, philo->id);
+		logs(philo, "is sleeping");
 		ft_sleep(philo->data->time_to_sleep);
-		printf("%lld %d is thinking\n", current_time() - philo->data->start_time, philo->id);
+		logs(philo, "is thinking");
 	}
 }
 
