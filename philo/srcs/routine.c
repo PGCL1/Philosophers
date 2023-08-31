@@ -41,7 +41,7 @@ static void	logs(t_philo *philo, const char *str)//, int (*fp)(const char *fmt, 
 void	takeforks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[philo->id-1]);
-	if (philo_died(philo) == 1)
+	if (philo->data->philo_died == 1)
 		return ;
 	logs(philo, "has taken a fork");
 	if (philo->data->nbr_philos == 1)
@@ -53,7 +53,7 @@ void	takeforks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	if (philo_died(philo) == 1)
+	if (philo->data->philo_died == 1)
 		return ;
 	if (philo->data->nbr_philos == 1)
 		return ;
@@ -66,7 +66,7 @@ void	drop_n_sleep(t_philo *philo)
 {
 	pthread_mutex_unlock(&philo->data->forks[philo->id-1]);
 	pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nbr_philos]);
-	if (philo_died(philo) == 1)
+	if (philo->data->philo_died == 1)
 		return ;
 	if (philo->data->nbr_philos == 1)
 		return ;
