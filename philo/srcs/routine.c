@@ -15,22 +15,27 @@
 int	philo_died(t_philo *philo)
 {
 	//!here is the problem -- hello data race :))))
+	pthread_mutex_lock(&philo->data->finished_eating_mutex);
 	if (philo->data->philo_died == TRUE)
+	{
+		pthread_mutex_unlock(&philo->data->finished_eating_mutex);
 		return (1);
+	}
 	else if (current_time() - philo->data->start_time - philo->finished_eating_time >= philo->data->time_to_die)
 	{
 		pthread_mutex_lock(&philo->data->death_mutex);
 		philo->data->philo_died = TRUE;
 		philo->data->log = FALSE;
-		philo->dead = TRUE;
 		pthread_mutex_unlock(&philo->data->death_mutex);
+		pthread_mutex_unlock(&philo->data->finished_eating_mutex);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->data->finished_eating_mutex);
 	return (0);
 }
 
 
-static void	logs(t_philo *philo, const char *str)//, int (*fp)(const char *fmt, ...))
+static void	logs(t_philo *philo, const char *str)
 {
 	if (philo->data->log == FALSE)
 		return ;
@@ -48,7 +53,9 @@ void	takeforks(t_philo *philo)
 		return;
 	pthread_mutex_lock(&philo->data->forks[philo->id % philo->data->nbr_philos]);
 	logs(philo, "has taken a fork");
+	pthread_mutex_lock(&philo->data->finished_eating_mutex);
 	philo->finished_eating_time = current_time() - philo->data->start_time;
+	pthread_mutex_unlock(&philo->data->finished_eating_mutex);
 }
 
 void	eat(t_philo *philo)

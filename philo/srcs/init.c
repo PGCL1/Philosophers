@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/31 14:30:52 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/08/31 16:20:11 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	*mutex_init(t_data *data)
 	pthread_mutex_init(&data->ready_set, NULL);
 	pthread_mutex_init(&data->max_eat_mutex, NULL);
 	pthread_mutex_init(&data->death_mutex, NULL);
+	pthread_mutex_init(&data->finished_eating_mutex, NULL);
  	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
 	if (!data->forks)
 		return (printf("data->forks malloc failed\n"), (int*)1);
@@ -67,7 +68,6 @@ int	threads_init(t_data *data)
 		philo[i].data = data;
 		philo[i].ate_count = 0;
 		philo[i].ate_enough = FALSE;
-		philo[i].dead = FALSE;
 		philo[i].finished_eating_time = 0;
 		if (pthread_create(&philo[i].thread, NULL, (void *) schedule, philo + i))
 			return (printf("Error when creating thread\n"), 2);
