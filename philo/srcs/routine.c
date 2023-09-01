@@ -25,8 +25,10 @@ int	philo_died(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->data->death_mutex);
 		philo->data->philo_died = TRUE;
-		philo->data->log = FALSE;
 		pthread_mutex_unlock(&philo->data->death_mutex);
+		pthread_mutex_lock(&philo->data->log_mutex);
+		philo->data->log = FALSE;
+		pthread_mutex_unlock(&philo->data->log_mutex);
 		pthread_mutex_unlock(&philo->data->finished_eating_mutex);
 		return (1);
 	}
@@ -37,11 +39,15 @@ int	philo_died(t_philo *philo)
 
 static void	logs(t_philo *philo, const char *str)
 {
-
+	pthread_mutex_lock(&philo->data->log_mutex);
 	if (philo->data->log == FALSE)
+	{
+		pthread_mutex_unlock(&philo->data->log_mutex);
 		return ;
+	}
 	else
 		printf("%lld %d %s\n", current_time() - philo->data->start_time, philo->id, str);
+	pthread_mutex_unlock(&philo->data->log_mutex);
 }
 
 void	takeforks(t_philo *philo)

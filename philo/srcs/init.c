@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/01 19:22:32 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/01 20:19:05 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static void	*mutex_init(t_data *data)
 
 	i = -1;
 	pthread_mutex_init(&data->ready_set, NULL);
+	pthread_mutex_init(&data->log_mutex, NULL);
  	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
 	if (!data->forks)
 		return (printf("data->forks malloc failed\n"), (int*)1);
@@ -85,7 +86,9 @@ int	threads_init(t_data *data)
 			{
 				printf(/* RED */"%llu %d died\n"/* RESET */,  current_time() - philo->data->start_time, philo[i].id);
 				stop = 1;
+				pthread_mutex_lock(&philo->data->log_mutex);
 				data->log = FALSE;
+				pthread_mutex_unlock(&philo->data->log_mutex);
 				break;
 			}
 		}
@@ -103,3 +106,39 @@ int	threads_init(t_data *data)
 	pthread_mutex_destroy(data->forks);
 	return (0);
 }
+
+/*
+1 800 200 200
+a philo should die
+4 310 200 100
+a philo should die
+4 200 205 200
+a philo should die
+5 800 200 200 7
+no one should die, simulation should stop after 7 eats
+4 410 200 200 10
+no one should die, simulation should stop after 10 eats
+-5 600 200 200
+should error and not run (no crashing)
+4 -5 200 200
+should error and not run (no crashing)
+4 600 -5 200
+should error and not run (no crashing)
+4 600 200 -5
+should error and not run (no crashing)
+4 600 200 200 -5
+should error and not run (no crashing)
+//--------------------------------------------
+5 800 200 200
+no one should die
+5 600 150 150
+no one should die
+4 410 200 200
+no one should die
+100 800 200 200
+no one should die
+105 800 200 200
+no one should die
+200 800 200 200
+no one should die
+*/
