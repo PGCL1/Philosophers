@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/31 16:20:04 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/01 19:15:10 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	t_data {
 	int				exit_flag;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	ready_set;
+	pthread_mutex_t log_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	max_eat_mutex;
 	pthread_mutex_t	finished_eating_mutex;
@@ -91,5 +92,6 @@ int		philo_ate_enough(t_philo *philo);
 
 /*4) Memory control-----------------------------------------------------------*/
 void ft_leaks();
+int	data_protection(int n, pthread_mutex_t *mutex);
 
 #endif

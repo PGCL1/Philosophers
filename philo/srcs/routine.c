@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:13:29 by glacroix          #+#    #+#             */
-/*   Updated: 2023/08/30 15:47:49 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/01 19:55:21 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	philo_died(t_philo *philo)
 
 static void	logs(t_philo *philo, const char *str)
 {
+
 	if (philo->data->log == FALSE)
 		return ;
 	else
@@ -46,8 +47,6 @@ static void	logs(t_philo *philo, const char *str)
 void	takeforks(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->data->forks[philo->id-1]);
-	if (philo->data->philo_died == 1)
-		return ;
 	logs(philo, "has taken a fork");
 	if (philo->data->nbr_philos == 1)
 		return;
@@ -60,8 +59,6 @@ void	takeforks(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	if (philo->data->philo_died == 1)
-		return ;
 	if (philo->data->nbr_philos == 1)
 		return ;
 	logs(philo, "is eating");
@@ -73,8 +70,6 @@ void	drop_n_sleep(t_philo *philo)
 {
 	pthread_mutex_unlock(&philo->data->forks[philo->id-1]);
 	pthread_mutex_unlock(&philo->data->forks[philo->id % philo->data->nbr_philos]);
-	if (philo->data->philo_died == 1)
-		return ;
 	if (philo->data->nbr_philos == 1)
 		return ;
 	if (philo->data->max_eating_cycles > -1
@@ -98,7 +93,6 @@ void	*schedule(t_philo *philo)
 		ft_sleep(50);
 	while (1)
 	{
-
 		philo->start_time = current_time() - philo->data->start_time;
 		if (philo->data->max_eating_cycles == 0)
 			break ;
