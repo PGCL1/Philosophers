@@ -14,7 +14,6 @@
 
 int	philo_died(t_philo *philo)
 {
-	//!here is the problem -- hello data race :))))
 	pthread_mutex_lock(&philo->data->finished_eating_mutex);
 	if (philo->data->philo_died == TRUE)
 	{
@@ -81,7 +80,7 @@ void	drop_n_sleep(t_philo *philo)
 	if (philo->data->max_eating_cycles > -1
 		&& philo->ate_count >= philo->data->max_eating_cycles)
 		philo->ate_enough = TRUE;
-	if (philo->ate_enough == FALSE && philo->data->philo_died == FALSE)
+	if (philo->ate_enough == FALSE)
 	{
 		logs(philo, "is sleeping");
 		ft_sleep(philo->data->time_to_sleep);
@@ -105,8 +104,15 @@ void	*schedule(t_philo *philo)
 		takeforks(philo);
 		eat(philo);
 		drop_n_sleep(philo);
-		if (philo->data->philo_died == TRUE || philo->data->nbr_philos == 1)
+		pthread_mutex_lock(&philo->data->death_mutex);
+		if (philo->data->philo_died == TRUE )
+		{
+			pthread_mutex_unlock(&philo->data->death_mutex);
 			break ;
+		}
+		pthread_mutex_unlock(&philo->data->death_mutex);
+		if (philo->data->nbr_philos == 1)
+			break;
 		if (philo->ate_enough == TRUE)
 		{
 			pthread_mutex_lock(&philo->data->max_eat_mutex);

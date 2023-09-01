@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/01 20:19:05 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/01 20:46:32 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static void	*mutex_init(t_data *data)
 	i = -1;
 	pthread_mutex_init(&data->ready_set, NULL);
 	pthread_mutex_init(&data->log_mutex, NULL);
+	pthread_mutex_init(&data->death_mutex, NULL);
+	pthread_mutex_init(&data->finished_eating_mutex, NULL);
+	pthread_mutex_init(&data->max_eat_mutex, NULL);
  	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
 	if (!data->forks)
 		return (printf("data->forks malloc failed\n"), (int*)1);
@@ -76,11 +79,14 @@ int	threads_init(t_data *data)
 	{
 		for (int i = 0; i < data->nbr_philos; i++)
 		{
+			pthread_mutex_lock(&philo->data->max_eat_mutex);
 			if (data->exit_flag == data->nbr_philos)
 			{
+				pthread_mutex_unlock(&philo->data->max_eat_mutex);
 				stop = 1;
 				break;
 			}
+			pthread_mutex_unlock(&philo->data->max_eat_mutex);
 			philo_died(&philo[i]);
 			if (philo->data->philo_died == 1 && data->exit_flag != data->nbr_philos)
 			{
@@ -141,4 +147,7 @@ no one should die
 no one should die
 200 800 200 200
 no one should die
+
+
+
 */
