@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 19:32:04 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 15:01:23 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:33:50 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	routine_check(t_data *data, t_philo *philo, int *stop)
 		}
 		pthread_mutex_unlock(&philo->data->max_eat_mutex);
 		philo_died(&philo[i]);
-		if (philo->data->philo_died == 1 && data->exit_flag != data->nbr_philos)
+		if (data->philo_died == 1 && data->exit_flag != data->nbr_philos)
 		{
-			printf("%llu %d died\n", current_time() - philo->data->start_time,
+			printf("%llu %d died\n", current_time() - data->start_time,
 				philo[i].id);
 			*stop = 1;
 			pthread_mutex_lock(&philo->data->log_mutex);
