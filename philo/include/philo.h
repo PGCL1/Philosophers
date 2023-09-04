@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 14:58:05 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:30:06 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # define ORANGE			"\x1b[38;5;209m"
 
 /*Data Structures-------------------------------------------------------------*/
-typedef struct	t_data {
+typedef struct t_data {
 	long long		time_to_die;
 	long long		time_to_eat;
 	long long		time_to_sleep;
@@ -44,15 +44,14 @@ typedef struct	t_data {
 	int				exit_flag;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	ready_set;
-	pthread_mutex_t log_mutex;
+	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	max_eat_mutex;
 	pthread_mutex_t	finished_eating_mutex;
 	pthread_mutex_t	init_mutex;
 }				t_data;
 
-
-typedef struct	t_philo {
+typedef struct t_philo {
 	pthread_t	thread;
 	long long	start_time;
 	long long	finished_eating_time;
@@ -67,36 +66,34 @@ typedef struct	t_philo {
 # define TRUE 1
 # define FALSE 0
 
-/*Shortcuts-------------------------------------------------------------------*/
-
-
 /*1) Init---------------------------------------------------------------------*/
-void	init_args(int argc, char **argv, t_data *data);
-int		init_threads(t_data *data);
+void		init_args(int argc, char **argv, t_data *data);
+int			init_threads(t_data *data);
 
 /*2) Utils--------------------------------------------------------------------*/
-int		args_wrong(int argc, char **argv);
-int		ft_isdigit(char c);
-int		is_number(char *str);
+int			args_wrong(int argc, char **argv);
+int			ft_isdigit(char c);
+int			is_number(char *str);
 long long	current_time(void);
-int		ft_atoi(char *str);
-void	ft_sleep(long long time);
-void	ft_putstr_fd(char *s, int fd);
-size_t	ft_strlen(const char *str);
-void	mutexes_destroy(t_data *data);
+int			ft_atoi(char *str);
+void		ft_sleep(long long time);
+void		ft_putstr_fd(char *s, int fd);
+size_t		ft_strlen(const char *str);
+void		free_memory(t_data *data, t_philo *philo);
+int			thread_join(t_data *data, t_philo *philo);
 
-/*3) schedule------------------------------------------------------------------*/
-void	*routine(t_philo *philo);
-void	routine_check(t_data *data, t_philo *philo, int *stop);
-void	takeforks(t_philo *philo);
-void	eat(t_philo *philo);
-void	drop_n_sleep(t_philo *philo);
-int		philo_died(t_philo *philo);
-int		philo_ate_enough(t_philo *philo);
-void	routine_stop(t_philo *philo, int *stop);
+/*3) schedule-----------------------------------------------------------------*/
+void		*routine(t_philo *philo);
+void		routine_check(t_data *data, t_philo *philo, int *stop);
+void		takeforks(t_philo *philo);
+void		eat(t_philo *philo);
+void		drop_n_sleep(t_philo *philo);
+int			philo_died(t_philo *philo);
+int			philo_ate_enough(t_philo *philo);
+void		routine_stop(t_philo *philo, int *stop);
 
 /*4) Memory control-----------------------------------------------------------*/
-void ft_leaks();
-int	data_protection(int n, pthread_mutex_t *mutex);
+void		ft_leaks(void);
+int			data_protection(int n, pthread_mutex_t *mutex);
 
 #endif

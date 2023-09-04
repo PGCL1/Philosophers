@@ -6,31 +6,35 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 14:48:22 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/04 16:30:56 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//changes : line 61
-
 #include "../include/philo.h"
 
-static void	*init_mutex(t_data *data)
+static int	init_mutex(t_data *data)
 {
 	int	i;
 
 	i = -1;
-	pthread_mutex_init(&data->ready_set, NULL);
-	pthread_mutex_init(&data->log_mutex, NULL);
-	pthread_mutex_init(&data->death_mutex, NULL);
-	pthread_mutex_init(&data->finished_eating_mutex, NULL);
-	pthread_mutex_init(&data->max_eat_mutex, NULL);
-	pthread_mutex_init(&data->init_mutex, NULL);
+	if (pthread_mutex_init(&data->ready_set, NULL) != 0)
+		return (ft_putstr_fd("Error initializing mutex\n", 2), 1);
+	if (pthread_mutex_init(&data->log_mutex, NULL) != 0)
+		return (ft_putstr_fd("Error initializing mutex\n", 2), 1);
+	if (pthread_mutex_init(&data->death_mutex, NULL) != 0)
+		return (ft_putstr_fd("Error initializing mutex\n", 2), 1);
+	if (pthread_mutex_init(&data->finished_eating_mutex, NULL) != 0)
+		return (ft_putstr_fd("Error initializing mutex\n", 2), 1);
+	if (pthread_mutex_init(&data->max_eat_mutex, NULL) != 0)
+		return (ft_putstr_fd("Error initializing mutex\n", 2), 1);
+	if (pthread_mutex_init(&data->init_mutex, NULL) != 0)
+		return (ft_putstr_fd("Error initializing mutex\n", 2), 1);
 	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
 	if (!data->forks)
-		return (ft_putstr_fd("data->forks malloc failed\n", 2), (int*) 1);
+		return (ft_putstr_fd("failed malloc data->forks\n", 2), 1);
 	while (++i < data->nbr_philos)
 		pthread_mutex_init(&data->forks[i], NULL);
-	return (NULL);
+	return (0);
 }
 
 void	init_args(int argc, char **argv, t_data *data)
@@ -46,8 +50,7 @@ void	init_args(int argc, char **argv, t_data *data)
 		data->max_eating_cycles = ft_atoi(argv[5]);
 	else
 		data->max_eating_cycles = -1;
-	//!add condition when initializing fails
-	if ((int) init_mutex(data) == 1)
+	if (init_mutex(data) == 1)
 		return ;
 }
 
@@ -59,8 +62,11 @@ static int	init_philo(t_data *data, t_philo *philo, int *i)
 	philo->ate_count = 0;
 	philo->ate_enough = FALSE;
 	philo->finished_eating_time = 0;
-	if (pthread_create(&philo->thread, NULL, (void *) routine, philo))
+	if (pthread_create(&philo->thread, NULL, (void *) routine, philo) != 0)
+	{
+		pthread_mutex_unlock(&data->init_mutex);
 		return (ft_putstr_fd("Error when creating thread\n", 2), 3);
+	}
 	pthread_mutex_unlock(&data->init_mutex);
 	return (0);
 }
@@ -75,22 +81,20 @@ int	init_threads(t_data *data)
 	stop = 0;
 	philo = malloc(sizeof(*philo) * data->nbr_philos);
 	if (!philo)
-		return (1);
+	{
+		free(data->forks);
+		return (ft_putstr_fd("Error failed malloc philo\n", 2), 4);
+	}
 	pthread_mutex_lock(&data->ready_set);
 	while (++i < data->nbr_philos)
-		init_philo(data, &philo[i], &i);
+		stop = init_philo(data, philo + i, &i);
 	data->start_time = current_time();
 	pthread_mutex_unlock(&data->ready_set);
 	while (!stop)
 		routine_check(data, philo, &stop);
-	i = -1;
-	while (++i < data->nbr_philos)
-	{
-		if (pthread_join(philo[i].thread, NULL) != 0)
-			return (ft_putstr_fd("Error when joining thread\n", 2), 4);
-	}
+	thread_join(data, philo);
 	pthread_mutex_unlock(data->forks);
-	mutexes_destroy(data);
+	free_memory(data, philo);
 	return (0);
 }
 
