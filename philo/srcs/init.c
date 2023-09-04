@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/01 20:46:32 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/04 14:48:22 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "../include/philo.h"
 
-static void	*mutex_init(t_data *data)
+static void	*init_mutex(t_data *data)
 {
 	int	i;
 
@@ -24,15 +24,16 @@ static void	*mutex_init(t_data *data)
 	pthread_mutex_init(&data->death_mutex, NULL);
 	pthread_mutex_init(&data->finished_eating_mutex, NULL);
 	pthread_mutex_init(&data->max_eat_mutex, NULL);
- 	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
+	pthread_mutex_init(&data->init_mutex, NULL);
+	data->forks = malloc(sizeof(*data->forks) * data->nbr_philos);
 	if (!data->forks)
-		return (printf("data->forks malloc failed\n"), (int*)1);
+		return (ft_putstr_fd("data->forks malloc failed\n", 2), (int*) 1);
 	while (++i < data->nbr_philos)
 		pthread_mutex_init(&data->forks[i], NULL);
-	return NULL;
+	return (NULL);
 }
 
-void	args_init(int argc, char **argv, t_data *data)
+void	init_args(int argc, char **argv, t_data *data)
 {
 	data->nbr_philos = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
@@ -45,12 +46,26 @@ void	args_init(int argc, char **argv, t_data *data)
 		data->max_eating_cycles = ft_atoi(argv[5]);
 	else
 		data->max_eating_cycles = -1;
-	if ((int) mutex_init(data) == 1)
-		return;
+	//!add condition when initializing fails
+	if ((int) init_mutex(data) == 1)
+		return ;
 }
 
+static int	init_philo(t_data *data, t_philo *philo, int *i)
+{
+	pthread_mutex_lock(&data->init_mutex);
+	philo->id = *i + 1;
+	philo->data = data;
+	philo->ate_count = 0;
+	philo->ate_enough = FALSE;
+	philo->finished_eating_time = 0;
+	if (pthread_create(&philo->thread, NULL, (void *) routine, philo))
+		return (ft_putstr_fd("Error when creating thread\n", 2), 3);
+	pthread_mutex_unlock(&data->init_mutex);
+	return (0);
+}
 
-int	threads_init(t_data *data)
+int	init_threads(t_data *data)
 {
 	t_philo	*philo;
 	int		i;
@@ -63,53 +78,19 @@ int	threads_init(t_data *data)
 		return (1);
 	pthread_mutex_lock(&data->ready_set);
 	while (++i < data->nbr_philos)
-	{
-		philo[i].id = i + 1;
-		philo[i].data = data;
-		philo[i].ate_count = 0;
-		philo[i].ate_enough = FALSE;
-		philo[i].finished_eating_time = 0;
-		if (pthread_create(&philo[i].thread, NULL, (void *) schedule, philo + i))
-			return (printf("Error when creating thread\n"), 2);
-	}
-	
+		init_philo(data, &philo[i], &i);
 	data->start_time = current_time();
 	pthread_mutex_unlock(&data->ready_set);
 	while (!stop)
-	{
-		for (int i = 0; i < data->nbr_philos; i++)
-		{
-			pthread_mutex_lock(&philo->data->max_eat_mutex);
-			if (data->exit_flag == data->nbr_philos)
-			{
-				pthread_mutex_unlock(&philo->data->max_eat_mutex);
-				stop = 1;
-				break;
-			}
-			pthread_mutex_unlock(&philo->data->max_eat_mutex);
-			philo_died(&philo[i]);
-			if (philo->data->philo_died == 1 && data->exit_flag != data->nbr_philos)
-			{
-				printf(/* RED */"%llu %d died\n"/* RESET */,  current_time() - philo->data->start_time, philo[i].id);
-				stop = 1;
-				pthread_mutex_lock(&philo->data->log_mutex);
-				data->log = FALSE;
-				pthread_mutex_unlock(&philo->data->log_mutex);
-				break;
-			}
-		}
-	} 
+		routine_check(data, philo, &stop);
 	i = -1;
 	while (++i < data->nbr_philos)
 	{
-		//int err = pthread_join(philo[i].thread, NULL);
 		if (pthread_join(philo[i].thread, NULL) != 0)
-			return (printf("Error when joining thread\n"), 3);
-		/*  else
-			printf(RED"%llu %d was joined\n"RESET, current_time() - philo->data->start_time, philo[i].id);  */
+			return (ft_putstr_fd("Error when joining thread\n", 2), 4);
 	}
 	pthread_mutex_unlock(data->forks);
-	pthread_mutex_destroy(data->forks);
+	mutexes_destroy(data);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/09/01 21:31:04 by glacroix         ###   ########.fr        #
+#    Updated: 2023/09/04 14:53:26 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,8 +29,9 @@ NAME		= philo
 # **************************************************************************** #
 SRCS		= srcs/main.c\
 				srcs/init.c\
-				srcs/errors.c\
+				srcs/checker.c\
 				srcs/utils.c\
+				srcs/utils2.c\
 				srcs/routine.c\
 
 OBJS		= $(SRCS:%.c=objs/%.o)
