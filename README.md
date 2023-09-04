@@ -27,6 +27,6 @@ Thank you to the people that wrote these! Here's some ressources that really hel
 
 ## My notes
 
-All in all, this project for me, was a great learning path into concurrent programming, its advantages and drawbacks. It was also a stepping stone into understand deterministic programming and non-deterministic programming. I enjoyed my times with threads and hope to see more in the future. Down below you will find the usage of the program. Peace
+All in all, this project for me, was a great learning path into concurrent programming, its advantages and drawbacks. It was also a stepping stone into understand deterministic programming and non-deterministic programming. I enjoyed my times with threads and hope to see more in the future. Peace!
 
 G
