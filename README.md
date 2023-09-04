@@ -7,9 +7,9 @@ To mitigate the risks of deadlocks, I initiate a sleep function after the creati
 ## Thank you
 
 Thank you to the people that wrote these! Here's some ressources that really helped me doing this project:
-* (Dining Philosopher Problem - Medium Article)[https://medium.com/great-moments-in-computing-history/the-dining-philosophers-2e3da2847bac]
-* (Threads & Concurrency) [https://www.baeldung.com/cs/category/concurrency/tag/threads]
-* (Scheduling Computing) [https://en.wikipedia.org/wiki/Scheduling_(computing)]
+* [Dining Philosopher Problem - Medium Article](https://medium.com/great-moments-in-computing-history/the-dining-philosophers-2e3da2847bac)
+* [Threads & Concurrency] (https://www.baeldung.com/cs/category/concurrency/tag/threads)
+* [Scheduling Computing] (https://en.wikipedia.org/wiki/Scheduling_(computing))
 
 ## Installation
 
