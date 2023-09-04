@@ -10,8 +10,14 @@ To mitigate the risks of deadlocks, I initiate a sleep function after the creati
 git clone git@github.com:PGCL1/Philosophers
 cd Philosophers/philo
 make
+```
+
+## Usage
+
+```bash
 ./philo philo-number time_to_die time_to_eat time_to_sleep [number_of_meals]
 ```
+
 > [!NOTE]  
 > All times passed as arguments should be in milliseconds, that way you won't have to wait ages to see the output :). In the example below, no one shoud die (see below): <br />
 > ```bash
