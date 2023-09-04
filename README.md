@@ -15,7 +15,7 @@ make
 ## Usage
 
 ```bash
-./philo philo-number time_to_die time_to_eat time_to_sleep [number_of_meals]
+./philo philo_number time_to_die time_to_eat time_to_sleep [number_of_meals]
 ```
 
 > [!NOTE]  
