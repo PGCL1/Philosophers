@@ -4,9 +4,12 @@ In this project, I learnt about multithreaded programs and concurrency. The exer
 
 To mitigate the risks of deadlocks, I initiate a sleep function after the creation of my threads; where philosophers' with even ID numbers would have to wait 50ms to start the execution. In regards to data races, I created various mutexes blocking off the access to variables shared by my "philosophers" and the main thread. In doing so, those variables could only be accessed by one philosopher or my main thread; this would eliminate the possibility of a read attempt and write attempt happening at the same time. Similarly to solving my program's data races, to protect my critical sections, I made use of mutexes to block off the accesses to other threads when in use.
 
-All in all, this project for me, was a great learning path into concurrent programming, its advantages and drawbacks. It was also a stepping stone into understand deterministic programming and non-deterministic programming. I enjoyed my times with threads and hope to see more in the future. Down below you will find the usage of the program. Peace
+## Thank you
 
-G
+Thank you to the people that wrote these! Here's some ressources that really helped me doing this project:
+* (Dining Philosopher Problem - Medium Article)[https://medium.com/great-moments-in-computing-history/the-dining-philosophers-2e3da2847bac]
+* (Threads & Concurrency) [https://www.baeldung.com/cs/category/concurrency/tag/threads]
+* (Scheduling Computing) [https://en.wikipedia.org/wiki/Scheduling_(computing)]
 
 ## Installation
 
@@ -22,3 +25,8 @@ make
 > ./philo 20 800 200 200 [5]
 > ```
 
+## My notes
+
+All in all, this project for me, was a great learning path into concurrent programming, its advantages and drawbacks. It was also a stepping stone into understand deterministic programming and non-deterministic programming. I enjoyed my times with threads and hope to see more in the future. Down below you will find the usage of the program. Peace
+
+G
