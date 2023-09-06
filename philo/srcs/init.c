@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:44:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 16:30:56 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:19:10 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,14 @@ static int	init_mutex(t_data *data)
 	return (0);
 }
 
-void	init_args(int argc, char **argv, t_data *data)
+int	init_args(int argc, char **argv, t_data *data)
 {
 	data->nbr_philos = ft_atoi(argv[1]);
 	data->time_to_die = ft_atoi(argv[2]);
 	data->time_to_eat = ft_atoi(argv[3]);
 	data->time_to_sleep = ft_atoi(argv[4]);
+	if (data_wrong(data) == TRUE)
+		return (1);
 	data->philo_died = FALSE;
 	data->log = TRUE;
 	data->exit_flag = 0;
@@ -51,7 +53,8 @@ void	init_args(int argc, char **argv, t_data *data)
 	else
 		data->max_eating_cycles = -1;
 	if (init_mutex(data) == 1)
-		return ;
+		return (1);
+	return (0);
 }
 
 static int	init_philo(t_data *data, t_philo *philo, int *i)

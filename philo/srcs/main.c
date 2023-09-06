@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:41:20 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 16:27:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:14:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	main(int argc, char **argv)
 
 	if (args_wrong(argc, argv) == TRUE)
 		return (ft_putstr_fd("Params are wrong\n", 2), 1);
-	init_args(argc, argv, &data);
+	if (init_args(argc, argv, &data) == TRUE)
+		return (ft_putstr_fd("Args are wrong\n", 2), 2);
 	init_threads(&data);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 16:30:06 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/06 13:18:23 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,12 @@ typedef struct t_philo {
 # define FALSE 0
 
 /*1) Init---------------------------------------------------------------------*/
-void		init_args(int argc, char **argv, t_data *data);
+int			init_args(int argc, char **argv, t_data *data);
 int			init_threads(t_data *data);
 
 /*2) Utils--------------------------------------------------------------------*/
 int			args_wrong(int argc, char **argv);
+int			data_wrong(t_data *data);
 int			ft_isdigit(char c);
 int			is_number(char *str);
 long long	current_time(void);
