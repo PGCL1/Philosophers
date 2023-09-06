@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 19:32:04 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/06 13:23:24 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/06 16:11:25 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ int	args_wrong(int argc, char **argv)
 
 int	data_wrong(t_data *data)
 {
-	if (data->nbr_philos == 0)
+	if (data->nbr_philos <= 0)
 		return (1);
-	if (data->time_to_die == -1 || data->time_to_die == 0)
+	if (data->time_to_die <= 0)
 		return (1);
-	if (data->time_to_eat == -1 || data->time_to_eat == 0)
+	if (data->time_to_eat <= 0)
 		return (1);
-	if (data->time_to_sleep == -1 || data->time_to_sleep == 0)
+	if (data->time_to_sleep <= 0)
 		return (1);
 	return (0);
 }

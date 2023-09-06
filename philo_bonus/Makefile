@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/09/06 15:07:40 by glacroix         ###   ########.fr        #
+#    Updated: 2023/09/06 15:30:36 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,29 +23,24 @@ WHITE  		= "\x1B[37m"
 
 #Program name
 # **************************************************************************** #
-NAME		= philo
+NAME		= philo_bonus
 
 #SRC & OBJS Details
 # **************************************************************************** #
 SRCS		= srcs/main.c\
-				srcs/init.c\
-				srcs/checker.c\
-				srcs/utils.c\
-				srcs/utils2.c\
-				srcs/routine.c\
 
 OBJS		= $(SRCS:%.c=objs/%.o)
 
 #Execution
 # **************************************************************************** #
 CC			= gcc 
-CFLAGS		= -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra #-g -fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
 ${NAME}: objs ${OBJS}
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo $(GREEN) "\n         Philo Compiled!       \n" $(RESET)
+	@echo $(GREEN) "\n         Philo Bonus Compiled!       \n" $(RESET)
 
 #Makefile Cmds
 # **************************************************************************** #
