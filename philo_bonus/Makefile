@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/09/06 15:30:36 by glacroix         ###   ########.fr        #
+#    Updated: 2023/09/07 19:32:26 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,10 @@ NAME		= philo_bonus
 #SRC & OBJS Details
 # **************************************************************************** #
 SRCS		= srcs/main.c\
+			  srcs/checker.c\
+			  srcs/utils.c\
+			  srcs/utils2.c\
+			  srcs/init.c\
 
 OBJS		= $(SRCS:%.c=objs/%.o)
 

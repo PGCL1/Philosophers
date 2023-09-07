@@ -1,33 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glacroix <glacroix@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/07 19:17:43 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/07 19:24:51 by glacroix         ###   ########.fr       */
+/*   Created: 2023/09/07 19:21:42 by glacroix          #+#    #+#             */
+/*   Updated: 2023/09/07 19:22:44 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-void	ft_leaks(void)
+int	args_wrong(int argc, char **argv)
 {
-	system("leaks -q philo");
-}
+	int	i;
 
-int main(int argc, char **argv)
-{
-	t_data	data;
-
-	//check args
-	if (args_wrong(argc, argv) == TRUE)
-		return (ft_putstr_fd("Params are wrong\n", 2), 1);
-	//check params
-	if (init_args(argc, argv, &data) == TRUE)
-		return (ft_putstr_fd("Args are wrong\n", 2), 2);	
-	//init processes
-	
+	i = 0;
+	if (argc < 5 || argc > 6)
+		return (1);
+	while (argv[++i] != NULL)
+	{
+		if (is_number(argv[i]) == FALSE)
+			return (1);
+	}
 	return (0);
 }
+
+int	data_wrong(t_data *data)
+{
+	if (data->n_philos <= 0)
+		return (1);
+	if (data->time_to_die <= 0)
+		return (1);
+	if (data->time_to_eat <= 0)
+		return (1);
+	if (data->time_to_sleep <= 0)
+		return (1);
+	return (0);
+}
+
+
