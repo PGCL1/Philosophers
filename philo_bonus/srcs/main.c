@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:17:43 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/07 19:24:51 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/08 12:59:16 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int main(int argc, char **argv)
 	if (init_args(argc, argv, &data) == TRUE)
 		return (ft_putstr_fd("Args are wrong\n", 2), 2);	
 	//init processes
-	
+	if (init_processes(&data) == 1)
+		return (ft_putstr_fd("Error when creating processes\n", 2), 3);	
 	return (0);
 }

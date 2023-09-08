@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/07 19:31:52 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/08 16:54:27 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ typedef struct t_data {
 	int				n_philos;
 	int				log;
 	int				exit_flag;
+	int				val;
 	sem_t			*forks;
+	const char		*sem_name;
 }				t_data;
 
 typedef struct t_philo {
@@ -61,15 +63,32 @@ typedef struct t_philo {
 # define TRUE 1
 # define FALSE 0
 
-int	args_wrong(int argc, char **argv);
-int	data_wrong(t_data *data);
-int	ft_isdigit(char c);
-void	ft_sleep(long long time);
-int	is_number(char *str);
+/*Functions--------------------------------------------------------------------*/
+
+//parsing
+int			args_wrong(int argc, char **argv);
+int			data_wrong(t_data *data);
+
+//init
+int			init_args(int argc, char **argv, t_data *data);
+int 		init_processes(t_data *data);
+
+//utils
+int			ft_isdigit(char c);
+void		ft_sleep(long long time);
+int			is_number(char *str);
 long long	current_time(void);
-int	ft_atoi(char *str);
-size_t	ft_strlen(const char *str);
-void	ft_putstr_fd(char *s, int fd);
-int	init_args(int argc, char **argv, t_data *data);
+int			ft_atoi(char *str);
+size_t		ft_strlen(const char *str);
+void		ft_putstr_fd(char *s, int fd);
+
+//routine
+void		routine(t_philo *philo);
+void		takeforks(t_philo *philo);
+void		eat(t_philo *philo);
+void		drop_n_sleep(t_philo *philo);
+
+//routine_check
+void		routine_stop(t_philo *philo, int *stop);
 
 #endif
