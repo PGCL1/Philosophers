@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <glacroix@student.42madrid>       +#+  +:+       +#+        */
+/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:23:22 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/07 19:24:05 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/15 20:03:14 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,25 @@ int	ft_isdigit(char c)
 	return (c >= '0' && c <= '9');
 }
 
-void	ft_sleep(long long time)
+void	ft_sleep(long long time, t_philo *philo)
 {
 	long long	start;
 
 	start = current_time() + time;
 	while (current_time() < start)
-		usleep(100);
+	{
+		if (current_time() - philo->data->start_time
+		- philo->finished_eating_time >= philo->data->time_to_die)
+		{
+			sem_wait(philo->data->sem_death);
+			for (int i = 0; i < philo->data->n_philos; i++)
+				sem_wait(philo->data->forks);
+			printf("%llu %d died\n", current_time() - philo->data->start_time,
+				philo->id);
+			exit(EXIT_DEATH);
+		}
+		usleep(500);
+	}
 }
 
 int	is_number(char *str)

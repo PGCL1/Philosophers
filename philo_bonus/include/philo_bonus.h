@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/08 16:54:27 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/15 19:26:34 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <string.h>
 # include <semaphore.h>
 # include <unistd.h>
+# include <signal.h>
 
 /*Print Colors----------------------------------------------------------------*/
 # define RESET  		"\x1B[0m"
@@ -39,19 +40,18 @@ typedef struct t_data {
 	long long		time_to_sleep;
 	long long		start_time;
 	int				max_eating_cycles;
-	int				philo_died;
 	int				n_philos;
-	int				log;
 	int				exit_flag;
-	int				val;
 	sem_t			*forks;
-	const char		*sem_name;
+	sem_t			*sem_death;
 }				t_data;
 
 typedef struct t_philo {
 	pid_t		pidC;
 	long long	start_time;
 	long long	finished_eating_time;
+	int				log;
+	int				philo_died;
 	int			id;
 	int			ate_count;
 	int			ate_enough;
@@ -59,10 +59,11 @@ typedef struct t_philo {
 	t_data		*data;
 }				t_philo;
 
-/*Homemade boolean------------------------------------------------------------*/
-# define TRUE 1
+/*Shortcuts--------------------------------------------------------------------*/
 # define FALSE 0
-
+# define TRUE 1
+# define EXIT_EAT 2
+# define EXIT_DEATH 3
 /*Functions--------------------------------------------------------------------*/
 
 //parsing
@@ -75,7 +76,7 @@ int 		init_processes(t_data *data);
 
 //utils
 int			ft_isdigit(char c);
-void		ft_sleep(long long time);
+void		ft_sleep(long long time, t_philo *philo);
 int			is_number(char *str);
 long long	current_time(void);
 int			ft_atoi(char *str);

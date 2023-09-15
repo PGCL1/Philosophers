@@ -6,7 +6,7 @@
 #    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/09/08 15:58:59 by glacroix         ###   ########.fr        #
+#    Updated: 2023/09/15 19:51:47 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ SRCS		= srcs/main.c\
 			  srcs/utils2.c\
 			  srcs/init.c\
 			  srcs/routine.c\
-			  srcs/routine_check.c\
 
 OBJS		= $(SRCS:%.c=objs/%.o)
 
