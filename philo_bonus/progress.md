@@ -1,3 +1,10 @@
+Things to do:
+- fix error for one philo -- doesn't print the death
+- fix cases that prints after death
+- fix dataraces with semaphores
+
+
+
 Allowed functions for bonus part:
 
 memset,

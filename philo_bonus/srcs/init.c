@@ -14,9 +14,6 @@
 
 static int init_semaphore(t_data *data)
 {
-	int	i;
-
-	i = -1;
 	sem_unlink("/forks");
 	sem_unlink("/death");
 	data->sem_death = sem_open("/death", O_CREAT, 0644, 1);
@@ -94,13 +91,13 @@ int	init_processes(t_data *data)
 }
 
 /*
-1 800 200 200
+1 800 200 200				problem -- death is not printed
 a philo should die
-4 310 200 100
+4 310 200 100				problem -- death is not printed
 a philo should die
-4 200 205 200
+4 200 205 200				problem	seems like deadlock..-but weird
 a philo should die
-5 800 200 200 7
+5 800 200 200 7				problem with printing after the program ends
 no one should die, simulation should stop after 7 eats
 4 410 200 200 10
 no one should die, simulation should stop after 10 eats
@@ -123,8 +120,8 @@ no one should die
 no one should die
 100 800 200 200
 no one should die
-105 800 200 200
+105 800 200 200				small problem with printing -- everything is not on one line
 no one should die
-200 800 200 200
+200 800 200 200				happens something problem with printing
 no one should die
 */
