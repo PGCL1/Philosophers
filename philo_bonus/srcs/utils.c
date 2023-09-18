@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:23:22 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/15 20:03:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/18 18:49:35 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,24 @@ int	ft_isdigit(char c)
 	return (c >= '0' && c <= '9');
 }
 
+//!print death
 void	ft_sleep(long long time, t_philo *philo)
 {
 	long long	start;
-
+	long long 	test;
 	start = current_time() + time;
 	while (current_time() < start)
 	{
-		if (current_time() - philo->data->start_time
-		- philo->finished_eating_time >= philo->data->time_to_die)
+		test = current_time() - philo->data->start_time - philo->finished_eating_time;
+		if (philo->data->n_philos == 1)
+			test = philo->data->time_to_die;
+		if (test >= philo->data->time_to_die)
 		{
+			printf("here\n");
 			sem_wait(philo->data->sem_death);
-			for (int i = 0; i < philo->data->n_philos; i++)
-				sem_wait(philo->data->forks);
-			printf("%llu %d died\n", current_time() - philo->data->start_time,
-				philo->id);
+			printf("%llu %d died\n", test, philo->id);
+			//for (int i = 0; i < philo->data->n_philos; i++)
+				//sem_wait(philo->data->forks);
 			exit(EXIT_DEATH);
 		}
 		usleep(500);

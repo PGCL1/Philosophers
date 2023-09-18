@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:30:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/15 20:06:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/18 18:50:26 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,25 +64,27 @@ int	init_processes(t_data *data)
 			routine(philo + i);
 	}
 	
-	waitpid(-1, &status, 0);
-	if (WIFEXITED(status))
-	{
-		if (WEXITSTATUS(status) == EXIT_DEATH)
+	while (1)
+	{	
+		waitpid(-1, &status, 0);
+		if (WIFEXITED(status))
 		{
-			printf("here\n");
-			while (++j < data->n_philos)
-				kill(philo[j].pidC, SIGKILL);
-			return 0;
-		}
-		if (WEXITSTATUS(status) == EXIT_EAT)
-		{
-			exit_flag += 1;
-			if (exit_flag == data->n_philos)
-				return 1;
+			if (WEXITSTATUS(status) == EXIT_DEATH)
+			{
+				while (++j < data->n_philos)
+					kill(philo[j].pidC, SIGTERM);
+				break;
+			}
+			if (WEXITSTATUS(status) == EXIT_EAT)
+			{
+				exit_flag += 1;
+				if (exit_flag == data->n_philos)
+					break;
+			}
 		}
 	}
 	if (sem_close(data->forks) == -1)
-		return (ft_putstr_fd("Error when closing the semaphore\n", 2), 1);
+		return (ft_putstr_fd("Error when closing the semaphore\n", 2), 2);
 	if (sem_unlink("/forks") == -1)
 		return (ft_putstr_fd("Error when unlinking the semaphore\n", 2), 1);
 	if (sem_unlink("/death") == -1)
@@ -122,6 +124,6 @@ no one should die
 no one should die
 105 800 200 200				small problem with printing -- everything is not on one line
 no one should die
-200 800 200 200				happens something problem with printing
+200 800 200 200		nobody knows --	happens something problem with printing
 no one should die
 */
