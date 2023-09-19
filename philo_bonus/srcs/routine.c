@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:31:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 16:04:41 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 20:40:42 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,9 @@
 
 static void	logs(t_philo *philo, const char *str)
 {
-	/*if (philo->log == FALSE)
-		return ;
-	else*/
 	sem_wait(philo->data->sem_print);
 	printf("%lld %d %s\n", current_time()
-			- philo->data->start_time, philo->id, str);
+		- philo->data->start_time, philo->id, str);
 	sem_post(philo->data->sem_print);
 }
 

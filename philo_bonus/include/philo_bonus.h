@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 15:09:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 20:36:57 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,10 @@ typedef struct t_data {
 }				t_data;
 
 typedef struct t_philo {
-	pid_t		pidC;
+	pid_t		pidc;
 	long long	start_time;
 	long long	finished_eating_time;
-	int				log;
-	int				philo_died;
+	int			philo_died;
 	int			id;
 	int			ate_count;
 	int			ate_enough;
@@ -62,12 +61,12 @@ typedef struct t_philo {
 	t_data		*data;
 }				t_philo;
 
-/*Shortcuts--------------------------------------------------------------------*/
+/*Shortcuts-------------------------------------------------------------------*/
 # define FALSE 0
 # define TRUE 1
 # define EXIT_EAT 2
 # define EXIT_DEATH 3
-/*Functions--------------------------------------------------------------------*/
+/*Functions-------------------------------------------------------------------*/
 
 //parsing
 int			args_wrong(int argc, char **argv);
@@ -75,7 +74,7 @@ int			data_wrong(t_data *data);
 
 //init
 int			init_args(int argc, char **argv, t_data *data);
-int 		init_processes(t_data *data);
+int			init_processes(t_data *data);
 
 //utils
 int			ft_isdigit(char c);
@@ -94,5 +93,9 @@ void		drop_n_sleep(t_philo *philo);
 
 //routine_check
 void		routine_stop(t_philo *philo, int *stop);
+void		status_catch_parent(t_philo *philo, t_data *data, int *j);
+
+//semaphore
+int			sem_close_unlink(t_data *data);
 
 #endif
