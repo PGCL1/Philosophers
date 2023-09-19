@@ -6,13 +6,13 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:30:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 20:39:04 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:02:31 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-static int	init_semaphore(t_data *data)
+static int init_semaphore(t_data *data)
 {
 	sem_unlink("/forks");
 	sem_unlink("/print");
@@ -25,7 +25,7 @@ static int	init_semaphore(t_data *data)
 	data->sem_data = sem_open("/data", O_CREAT, 0644, 1);
 	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
 	if (data->forks == SEM_FAILED)
-		return (ft_putstr_fd("Error when creating the semaphore\n", 2), 1);
+		return(ft_putstr_fd("Error when creating the semaphore\n", 2), 1);
 	return (0);
 }
 
@@ -41,18 +41,36 @@ int	init_args(int argc, char **argv, t_data *data)
 		data->max_eating_cycles = ft_atoi(argv[5]);
 	else
 		data->max_eating_cycles = -1;
-	if (init_semaphore(data) == 1)
+ 	if (init_semaphore(data) == 1)
 		return (1);
 	return (0);
 }
 
-void	status_catch_parent(t_philo *philo, t_data *data, int *j)
+int	init_processes(t_data *data)
 {
-	int	status;
-	int	exit_flag;
+	t_philo	*philo;
+	int		status = 0;
+	int		j = -1;
+	int		exit_flag = 0;
 
-	status = 0;
-	exit_flag = 0;
+	philo = malloc(sizeof(philo) * data->n_philos);
+	memset(philo, 0, sizeof(*philo) * data->n_philos);
+	if (!philo)
+		return (ft_putstr_fd("Error when mallocing philo\n", 2), 1);
+	data->start_time = current_time();
+	for (int i = 0; i < data->n_philos; i++)
+	{
+		philo[i].pidC = fork();
+		if (philo[i].pidC < 0)
+			return (ft_putstr_fd("Error when creating process\n", 2), 1);
+		if (philo[i].pidC == 0)
+		{
+			philo[i].id = i + 1;
+			philo[i].data = data;
+			routine(philo + i);
+		}
+	}
+	
 	while (1)
 	{	
 		waitpid(-1, &status, 0);
@@ -60,22 +78,18 @@ void	status_catch_parent(t_philo *philo, t_data *data, int *j)
 		{
 			if (WEXITSTATUS(status) == EXIT_DEATH)
 			{
-				while (++*j < data->n_philos)
-					kill(philo[*j].pidc, SIGTERM);
-				break ;
+				while (++j < data->n_philos)
+					kill(philo[j].pidC, SIGTERM);
+				break;
 			}
 			if (WEXITSTATUS(status) == EXIT_EAT)
 			{
 				exit_flag += 1;
 				if (exit_flag == data->n_philos)
-					break ;
+					break;
 			}
 		}
 	}
-}
-
-int	sem_close_unlink(t_data *data)
-{
 	if (sem_close(data->forks) == -1)
 		return (ft_putstr_fd("Error when closing the semaphore\n", 2), 2);
 	if (sem_unlink("/forks") == -1)
@@ -87,37 +101,6 @@ int	sem_close_unlink(t_data *data)
 	if (sem_unlink("/data") == -1)
 		return (ft_putstr_fd("Error when unlinking the semaphore\n", 2), 1);
 	if (sem_unlink("/death") == -1)
-		return (ft_putstr_fd("Error when unlinking the semaphore\n", 2), 1);
-	return (0);
-}
-
-int	init_processes(t_data *data)
-{
-	int		j;
-	int		i;
-	t_philo	*philo;
-
-	j = -1;
-	i = -1;
-	philo = malloc(sizeof(philo) * data->n_philos);
-	memset(philo, 0, sizeof(*philo) * data->n_philos);
-	if (!philo)
-		return (ft_putstr_fd("Error when mallocing philo\n", 2), 1);
-	data->start_time = current_time();
-	while (i < data->n_philos)
-	{
-		philo[i].pidc = fork();
-		if (philo[i].pidc < 0)
-			return (ft_putstr_fd("Error when creating process\n", 2), 1);
-		if (philo[i].pidc == 0)
-		{
-			philo[i].id = i + 1;
-			philo[i].data = data;
-			routine(philo + i);
-		}
-	}
-	status_catch_parent(philo, data, &j);
-	if (sem_close_unlink(data) == 1)
 		return (ft_putstr_fd("Error when unlinking the semaphore\n", 2), 1);
 	return (0);
 }

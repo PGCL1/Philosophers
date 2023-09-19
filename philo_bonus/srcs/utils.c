@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:23:22 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 20:41:28 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 21:05:37 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	ft_isdigit(char c)
 void	ft_sleep(long long time, t_philo *philo)
 {
 	long long	start;
-	long long	test;
-
+	long long 	test;
 	start = current_time() + time;
 	while (current_time() < start)
 	{
@@ -34,8 +33,8 @@ void	ft_sleep(long long time, t_philo *philo)
 		{
 			sem_wait(philo->data->sem_death);
 			printf("%llu %d died\n", test, philo->id);
-			/* for (int i = 0; i < philo->data->n_philos - 1; i++)
-				sem_wait(philo->data->forks); */
+			//for (int i = 0; i < philo->data->n_philos; i++)
+				//sem_wait(philo->data->forks);
 			exit(EXIT_DEATH);
 		}
 		usleep(500);
