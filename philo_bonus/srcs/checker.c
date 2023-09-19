@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <glacroix@student.42madrid>       +#+  +:+       +#+        */
+/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:21:42 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/07 19:22:44 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 17:25:36 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,3 @@ int	data_wrong(t_data *data)
 		return (1);
 	return (0);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/15 19:26:34 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:09:20 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ typedef struct t_data {
 	int				exit_flag;
 	sem_t			*forks;
 	sem_t			*sem_death;
+	sem_t			*sem_data;
+	sem_t			*sem_start_time;
+	sem_t			*sem_print;
 }				t_data;
 
 typedef struct t_philo {

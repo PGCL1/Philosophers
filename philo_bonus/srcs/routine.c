@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:31:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/18 18:39:06 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/19 16:04:41 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 static void	logs(t_philo *philo, const char *str)
 {
-	if (philo->log == FALSE)
+	/*if (philo->log == FALSE)
 		return ;
-	else
-		printf("%lld %d %s\n", current_time()
+	else*/
+	sem_wait(philo->data->sem_print);
+	printf("%lld %d %s\n", current_time()
 			- philo->data->start_time, philo->id, str);
+	sem_post(philo->data->sem_print);
 }
 
 void	takeforks(t_philo *philo)
@@ -55,7 +57,9 @@ void	routine(t_philo *philo)
 {
 	while (1)
 	{
+		sem_wait(philo->data->sem_start_time);
 		philo->start_time = current_time() - philo->data->start_time;
+		sem_post(philo->data->sem_start_time);
 		if (philo->data->max_eating_cycles == 0)
 			exit(EXIT_EAT);
 		takeforks(philo);
