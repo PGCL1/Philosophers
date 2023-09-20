@@ -50,7 +50,7 @@ typedef struct t_data {
 }				t_data;
 
 typedef struct t_philo {
-	pid_t		pidC;
+	pid_t		pidc;
 	long long	start_time;
 	long long	finished_eating_time;
 	int			id;
@@ -59,20 +59,22 @@ typedef struct t_philo {
 	t_data		*data;
 }				t_philo;
 
-/*Shortcuts--------------------------------------------------------------------*/
+/*Shortcuts-------------------------------------------------------------------*/
 # define FALSE 0
 # define TRUE 1
 # define EXIT_EAT 2
 # define EXIT_DEATH 3
-/*Functions--------------------------------------------------------------------*/
 
-//parsing
+/*Functions-------------------------------------------------------------------*/
+
+//base_setup
 int			args_wrong(int argc, char **argv);
 int			data_wrong(t_data *data);
+int			init_semaphore(t_data *data);
+int			init_args(int argc, char **argv, t_data *data);
 
 //init
-int			init_args(int argc, char **argv, t_data *data);
-int 		init_processes(t_data *data);
+int			init_processes(t_data *data);
 
 //utils
 int			ft_isdigit(char c);

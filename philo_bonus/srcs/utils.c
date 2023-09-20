@@ -21,7 +21,8 @@ int	ft_isdigit(char c)
 void	ft_sleep(long long time, t_philo *philo)
 {
 	long long	start;
-	long long 	test;
+	long long	test;
+
 	start = current_time() + time;
 	while (current_time() < start)
 	{

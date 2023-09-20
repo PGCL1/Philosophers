@@ -28,7 +28,7 @@ NAME		= philo_bonus
 #SRC & OBJS Details
 # **************************************************************************** #
 SRCS		= srcs/main.c\
-			  srcs/checker.c\
+			  srcs/base_setup.c\
 			  srcs/utils.c\
 			  srcs/utils2.c\
 			  srcs/init.c\
@@ -39,7 +39,7 @@ OBJS		= $(SRCS:%.c=objs/%.o)
 #Execution
 # **************************************************************************** #
 CC			= gcc 
-CFLAGS		= -Wall -Werror -Wextra #-g -fsanitize=thread
+CFLAGS		= -Wall -Werror -Wextra -O3 #-g -fsanitize=thread
 
 #SRC Execution
 # **************************************************************************** #
