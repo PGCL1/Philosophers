@@ -33,8 +33,6 @@ void	ft_sleep(long long time, t_philo *philo)
 		{
 			sem_wait(philo->data->sem_death);
 			printf("%llu %d died\n", test, philo->id);
-			//for (int i = 0; i < philo->data->n_philos; i++)
-				//sem_wait(philo->data->forks);
 			exit(EXIT_DEATH);
 		}
 		usleep(500);

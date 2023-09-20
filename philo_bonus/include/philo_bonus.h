@@ -53,11 +53,8 @@ typedef struct t_philo {
 	pid_t		pidC;
 	long long	start_time;
 	long long	finished_eating_time;
-	int				log;
-	int				philo_died;
 	int			id;
 	int			ate_count;
-	int			ate_enough;
 	int			exit_flag;
 	t_data		*data;
 }				t_philo;

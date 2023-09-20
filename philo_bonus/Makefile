@@ -39,7 +39,7 @@ OBJS		= $(SRCS:%.c=objs/%.o)
 #Execution
 # **************************************************************************** #
 CC			= gcc 
-CFLAGS		= -Wall -Werror -Wextra -g -fsanitize=thread
+CFLAGS		= -Wall -Werror -Wextra #-g -fsanitize=thread
 
 #SRC Execution
 # **************************************************************************** #

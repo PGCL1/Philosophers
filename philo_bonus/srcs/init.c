@@ -60,13 +60,13 @@ int	init_processes(t_data *data)
 	data->start_time = current_time();
 	for (int i = 0; i < data->n_philos; i++)
 	{
+		philo[i].id = i + 1;
+		philo[i].data = data;
 		philo[i].pidC = fork();
 		if (philo[i].pidC < 0)
 			return (ft_putstr_fd("Error when creating process\n", 2), 1);
 		if (philo[i].pidC == 0)
 		{
-			philo[i].id = i + 1;
-			philo[i].data = data;
 			routine(philo + i);
 		}
 	}
