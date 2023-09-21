@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:17:43 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 21:01:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:26:10 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int argc, char **argv)
 {
 	t_data	data;
 
+//	atexit(ft_leaks);
 	if (args_wrong(argc, argv) == TRUE)
 		return (ft_putstr_fd("Params are wrong\n", 2), 1);
 	if (init_args(argc, argv, &data) == TRUE)

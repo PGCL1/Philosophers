@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:30:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 16:02:31 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:35:08 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,21 @@ static void	status_catch_parent(t_data *data, t_philo *philo, int *status)
 
 	j = -1;
 	exit_flag = 0;
+	int	sta;
+	(void) status;
 	while (1)
 	{	
-		waitpid(-1, status, 0);
-		if (WIFEXITED(*status))
+		waitpid(-1, &sta, 0);
+		if (WIFEXITED(sta))
 		{
-			if (WEXITSTATUS(*status) == EXIT_DEATH)
+			if (WEXITSTATUS(sta) == EXIT_DEATH)
 			{
+				printf("time: %lld\n", current_time() - data->start_time);
 				while (++j < data->n_philos)
-					kill(philo[j].pidc, SIGTERM);
+					kill(philo[j].pidc, SIGKILL);//SIGTERM);
 				break ;
 			}
-			if (WEXITSTATUS(*status) == EXIT_EAT)
+			if (WEXITSTATUS(sta) == EXIT_EAT)
 			{
 				exit_flag += 1;
 				if (exit_flag == data->n_philos)
@@ -75,7 +78,7 @@ int	init_processes(t_data *data)
 
 	status = 0;
 	i = -1;
-	philo = malloc(sizeof(philo) * data->n_philos);
+	philo = malloc(sizeof(*philo) * data->n_philos);
 	memset(philo, 0, sizeof(*philo) * data->n_philos);
 	if (!philo)
 		return (ft_putstr_fd("Error when mallocing philo\n", 2), 1);
