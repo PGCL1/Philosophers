@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   base_setup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:21:42 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 14:52:53 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:06:54 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int	init_semaphore(t_data *data)
 	data->sem_start_time = sem_open("/start_time", O_CREAT, 0644, 1);
 	data->sem_data = sem_open("/data", O_CREAT, 0644, 1);
 	data->forks = sem_open("/forks", O_CREAT, 0644, data->n_philos);
-	if (data->forks == SEM_FAILED)
+	if (data->forks == SEM_FAILED || data->sem_data == SEM_FAILED
+		|| data->sem_death == SEM_FAILED
+		|| data->sem_start_time == SEM_FAILED
+		|| data->sem_print == SEM_FAILED)
 		return (ft_putstr_fd("Error when creating the semaphore\n", 2), 1);
 	return (0);
 }

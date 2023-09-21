@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:30:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 17:02:52 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:02:45 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,10 @@ static int	init_philos(t_data *data, t_philo *philo, int *i)
 	philo->data = data;
 	philo->pidc = fork();
 	if (philo->pidc < 0)
-		return (ft_putstr_fd("Error when creating process\n", 2), 1);
+	{
+		ft_putstr_fd("Error when creating process\n", 2);
+		exit(EXIT_FAILURE);
+	}
 	return (0);
 }
 
@@ -82,14 +85,12 @@ int	init_processes(t_data *data)
 	data->start_time = current_time();
 	while (++i < data->n_philos)
 	{
-		if (init_philos(data, philo + i, &i) == 1)
-			return (1);
+		init_philos(data, philo + i, &i);
 		if (philo[i].pidc == 0)
 			routine(philo + i);
 	}
 	status_catch_parent(data, philo, &status);
-	if (sem_close_unlink(data) == 1)
-		return (1);
+	sem_close_unlink(data);
 	free(philo);
 	return (0);
 }
