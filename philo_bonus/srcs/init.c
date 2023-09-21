@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:30:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 14:35:08 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:02:52 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,18 @@ static void	status_catch_parent(t_data *data, t_philo *philo, int *status)
 
 	j = -1;
 	exit_flag = 0;
-	int	sta;
-	(void) status;
 	while (1)
 	{	
-		waitpid(-1, &sta, 0);
-		if (WIFEXITED(sta))
+		waitpid(-1, status, 0);
+		if (WIFEXITED(*status))
 		{
-			if (WEXITSTATUS(sta) == EXIT_DEATH)
+			if (WEXITSTATUS(*status) == EXIT_DEATH)
 			{
-				printf("time: %lld\n", current_time() - data->start_time);
 				while (++j < data->n_philos)
-					kill(philo[j].pidc, SIGKILL);//SIGTERM);
+					kill(philo[j].pidc, SIGTERM);
 				break ;
 			}
-			if (WEXITSTATUS(sta) == EXIT_EAT)
+			if (WEXITSTATUS(*status) == EXIT_EAT)
 			{
 				exit_flag += 1;
 				if (exit_flag == data->n_philos)
@@ -85,12 +82,14 @@ int	init_processes(t_data *data)
 	data->start_time = current_time();
 	while (++i < data->n_philos)
 	{
-		init_philos(data, philo + i, &i);
+		if (init_philos(data, philo + i, &i) == 1)
+			return (1);
 		if (philo[i].pidc == 0)
 			routine(philo + i);
 	}
 	status_catch_parent(data, philo, &status);
-	sem_close_unlink(data);
+	if (sem_close_unlink(data) == 1)
+		return (1);
 	free(philo);
 	return (0);
 }

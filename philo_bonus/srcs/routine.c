@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:31:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/19 21:05:14 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:49:37 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ void	routine(t_philo *philo)
 {
 	while (1)
 	{
-		sem_wait(philo->data->sem_start_time);
 		philo->start_time = current_time() - philo->data->start_time;
-		sem_post(philo->data->sem_start_time);
 		if (philo->data->max_eating_cycles == 0)
 			exit(EXIT_EAT);
 		takeforks(philo);
