@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 19:32:04 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/06 16:11:25 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:14:26 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,10 @@ void	routine_stop(t_philo *philo, int *stop)
 	pthread_mutex_unlock(&philo->data->death_mutex);
 	if (philo->data->nbr_philos == 1)
 		*stop = 1;
-	if (philo->ate_enough == TRUE)
-	{
-		pthread_mutex_lock(&philo->data->max_eat_mutex);
-		philo->data->exit_flag++;
-		pthread_mutex_unlock(&philo->data->max_eat_mutex);
+	pthread_mutex_lock(&philo->data->max_eat_mutex);
+	if (philo->data->exit_flag >= philo->data->nbr_philos)
 		*stop = 1;
-	}
+	pthread_mutex_unlock(&philo->data->max_eat_mutex);
 }
 
 void	routine_check(t_data *data, t_philo *philo, int *stop)
@@ -92,7 +89,7 @@ void	routine_check(t_data *data, t_philo *philo, int *stop)
 	while (++i < data->nbr_philos)
 	{
 		pthread_mutex_lock(&philo->data->max_eat_mutex);
-		if (data->exit_flag == data->nbr_philos)
+		if (data->exit_flag >= data->nbr_philos)
 		{
 			pthread_mutex_unlock(&philo->data->max_eat_mutex);
 			*stop = 1;

@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/15 18:13:29 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/04 15:01:05 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/21 17:15:12 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,14 @@ void	drop_n_sleep(t_philo *philo)
 		return ;
 	if (philo->data->max_eating_cycles > -1
 		&& philo->ate_count >= philo->data->max_eating_cycles)
-		philo->ate_enough = TRUE;
-	if (philo->ate_enough == FALSE)
 	{
-		logs(philo, "is sleeping");
-		ft_sleep(philo->data->time_to_sleep);
-		logs(philo, "is thinking");
+		pthread_mutex_lock(&philo->data->max_eat_mutex);
+		philo->data->exit_flag++;
+		pthread_mutex_unlock(&philo->data->max_eat_mutex);
 	}
+	logs(philo, "is sleeping");
+	ft_sleep(philo->data->time_to_sleep);
+	logs(philo, "is thinking");
 }
 
 void	*routine(t_philo *philo)
