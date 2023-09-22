@@ -6,16 +6,16 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:41:20 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/06 13:14:20 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:28:53 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo.h"
 
-void	ft_leaks(void)
+/* void	ft_leaks(void)
 {
 	system("leaks -q philo");
-}
+} */
 
 int	main(int argc, char **argv)
 {

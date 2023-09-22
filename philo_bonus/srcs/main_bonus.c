@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:17:43 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 18:06:37 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/22 18:28:44 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-void	ft_leaks(void)
+/* void	ft_leaks(void)
 {
 	system("leaks -q philo");
-}
+} */
 
 int	main(int argc, char **argv)
 {
