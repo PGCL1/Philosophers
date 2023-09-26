@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 14:31:27 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 14:49:37 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:31:23 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ void	takeforks(t_philo *philo)
 		ft_sleep(philo->data->time_to_die, philo);
 	sem_wait(philo->data->forks);
 	logs(philo, "has taken a fork");
-	philo->finished_eating_time = current_time() - philo->data->start_time;
 }
 
 void	eat(t_philo *philo)
 {
 	logs(philo, "is eating");
 	ft_sleep(philo->data->time_to_eat, philo);
+	philo->finished_eating_time = current_time() - philo->data->start_time;
 	philo->ate_count++;
 }
 
@@ -52,9 +52,10 @@ void	drop_n_sleep(t_philo *philo)
 
 void	routine(t_philo *philo)
 {
+	if (philo->id % 2 == 0)
+		ft_sleep(50, philo);
 	while (1)
 	{
-		philo->start_time = current_time() - philo->data->start_time;
 		if (philo->data->max_eating_cycles == 0)
 			exit(EXIT_EAT);
 		takeforks(philo);

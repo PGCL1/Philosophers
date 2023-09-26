@@ -6,7 +6,7 @@
 /*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 13:01:09 by glacroix         ###   ########.fr       */
+/*   Updated: 2023/09/26 15:05:21 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct t_data {
 
 typedef struct t_philo {
 	pid_t		pidc;
-	long long	start_time;
 	long long	finished_eating_time;
 	int			id;
 	int			ate_count;
