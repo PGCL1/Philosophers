@@ -1,8 +1,23 @@
 # Philosophers
 
-In this project, I learnt about multithreaded programs and concurrency. The exercise takes the famous Dining Philosopher problem from Dijkstra as a base case. We are asked to reproduce this problem and find its solution. To do so, I created n number of threads, each one representing a philosopher. The forks are represented by mutexes, therefore can only be accessed by one philosopher at a time.
+In this project, I learnt about multithreaded programs, multi-processed programs and concurrency. 
+The repo offers two solutions for the famous Dining Philosopher problem from Dijkstra. 
+The project is split into two parts; the mandatory part where the philosophers are represented as threads and the bonus part where philosophers are processes. 
+Here are the main differences between both parts.
 
-To mitigate the risks of deadlocks, I initiate a sleep function after the creation of my threads; where philosophers' with even ID numbers would have to wait 50ms to start the execution. In regards to data races, I created various mutexes blocking off the access to variables shared by my "philosophers" and the main thread. In doing so, those variables could only be accessed by one philosopher or my main thread; this would eliminate the possibility of a read attempt and write attempt happening at the same time. Similarly to solving my program's data races, to protect my critical sections, I made use of mutexes to block off the accesses to other threads when in use.
+***Mandatory Part***
+The forks are represented by mutexes, therefore avoiding the risks of duplicated forks and data races.
+The function checking if any philosopher died or ate enough is done by the main execution thread, whilst the other threads are in the routine.
+
+***Bonus Part***
+The forks are represented as semaphores.
+The function checking if any philosopher died is embedded in the sleep function. Once a philosopher dies (i.e. a child process), it passes its exit code to his parent through waitpid and its macros.
+In the case of DEATH = the parent analyses the received exit code and proceeds to kill of the remaining children processes.
+
+***Learnings***
+Upon thread creation, the start time of threads are not syncronized, this may lead to deadlocks if critical sections are not properly protected.
+Some threads might be more "active" than others. To avoid starvation, a scheduler must be implemented to evenly distribute the CPU processing power to each thread.
+Data races occur once a variable is read and written to by two different processes or threads. Mutual exclusions whether as mutexes or semaphores, protect variable from being accessed by multiple threads/processes at the same time. They make a program safe.
 
 ## Installation
 
