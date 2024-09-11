@@ -3,24 +3,32 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+         #
+#    By: glacroix <PGCL>                            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/14 18:36:04 by glacroix          #+#    #+#              #
-#    Updated: 2023/09/26 15:35:28 by glacroix         ###   ########.fr        #
+#    Updated: 2024/09/11 17:55:18 by glacroix         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 #Colors
 # **************************************************************************** #
-RESET  		= "\x1B[0m"
-RED  		= "\x1B[31m"
-GREEN  		= "\x1B[32m"
-YELLOW  	= "\x1B[33m"
-BLUE 		= "\x1B[34m"
-MAGENTA 	= "\x1B[35m"
-CAYN  		= "\x1B[36m"
-WHITE  		= "\x1B[37m"
-
+ifeq ($(shell uname), Linux)
+	RESET		= '\033[0m'
+	RED			= '\033[0;31m'
+	GREEN		= '\033[0;32m'
+	YELLOW  	= '\033[1;33m'
+	MAGENTA 	= '\033[0;35m' 
+	CYAN  		= '\033[0;36m'
+	WHITE  		= '\033[1;37m'
+else
+    RED = "\x1B[31m"
+    GREEN = "\x1B[32m"
+    YELLOW = "\x1B[33m"
+    BLUE = "\x1B[34m"
+    MAGENTA = "\x1B[35m"
+    CAYN = "\x1B[36m"
+    WHITE = "\x1B[37m"
+endif
 #Program name
 # **************************************************************************** #
 NAME		= philo_bonus
@@ -39,13 +47,13 @@ OBJS		= $(SRCS:%.c=objs/%.o)
 #Execution
 # **************************************************************************** #
 CC			= gcc 
-CFLAGS		= -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS		= -Wall -Werror -Wextra -lpthread  #-fsanitize=address
 
 #SRC Execution
 # **************************************************************************** #
 ${NAME}: objs ${OBJS}
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-	@echo $(GREEN) "\n         Philo Bonus Compiled!       \n" $(RESET)
+	@echo $(MAGENTA) "\n~~~~~~~~~ Philo Bonus compiled! ~~~~~~~~\n" $(RESET)
 
 #Makefile Cmds
 # **************************************************************************** #
@@ -62,7 +70,7 @@ clean:
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo $(RED) "\n >>>>>>>> Deleted all *.o ! <<<<<<<< \n" $(RESET)
+	@echo $(RED) "\n>>>>>>>>>>> deleting object files <<<<<<<<<\n" $(RESET)
 
 re: fclean all
 

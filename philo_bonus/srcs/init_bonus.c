@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: glacroix <PGCL>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 19:30:55 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/21 18:02:45 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:51:12 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	status_catch_parent(t_data *data, t_philo *philo, int *status)
 	exit_flag = 0;
 	while (1)
 	{	
-		waitpid(-1, status, 0);
+		waitpid(-1, status, WNOHANG);
 		if (WIFEXITED(*status))
 		{
 			if (WEXITSTATUS(*status) == EXIT_DEATH)

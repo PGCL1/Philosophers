@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: glacroix <glacroix@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: glacroix <PGCL>                            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/14 18:38:57 by glacroix          #+#    #+#             */
-/*   Updated: 2023/09/26 15:05:21 by glacroix         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:41:28 by glacroix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <sys/wait.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <string.h>
 # include <semaphore.h>
 # include <unistd.h>
 # include <signal.h>
+#include <fcntl.h>
 
 /*Print Colors----------------------------------------------------------------*/
 # define RESET  		"\x1B[0m"
